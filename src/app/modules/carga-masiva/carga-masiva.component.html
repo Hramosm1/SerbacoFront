@@ -1,0 +1,133 @@
+<body>
+    <div class="row divPartner">
+        <!-- Seleccionas al socio -->
+        <div class="col-sm-10">
+            <h5>Seleccionar socio<strong style="color: red; font-size: 15px;">*</strong></h5>
+            <div class="ng-autocomplete2">
+                <ng-autocomplete placeHolder="Seleccione al socio" [data]="comboSocio"
+                    [searchKeyword]="keyword10" [itemTemplate]="itemTemplate1"
+                    (selected)='getIdCliente($event)' [notFoundTemplate]="notFoundTemplate1">
+                </ng-autocomplete>
+
+                <ng-template #itemTemplate1 let-item>
+                    <a [innerHTML]="item.Socio"></a>
+                </ng-template>
+
+                <ng-template #notFoundTemplate1 let-notFound>
+                    <div [innerHTML]="notFound"></div>
+                </ng-template>
+            </div>
+        </div>
+        <!-- Seleccionar la direccion del socio -->
+        <div class="col-sm-8">
+            <h5>Seleccione la dirección</h5>
+            <div class="ng-autocomplete2">
+                <ng-autocomplete placeHolder="Seleccione la direccion del socio"
+                    [data]="obtenerDireccionesSocio" [searchKeyword]="keyword1"
+                    [itemTemplate]="itemTemplate13"
+                    (selected)='getIdDireccion($event)'
+                    [notFoundTemplate]="notFoundTemplate13">
+                </ng-autocomplete>                                                                                                                                              
+
+                <ng-template #itemTemplate13 let-item>
+                    <a [innerHTML]="item.Direccion"></a>
+                </ng-template>
+
+                <ng-template #notFoundTemplate13 let-notFound>
+                    <div [innerHTML]="notFound"></div>                                                              
+                </ng-template>
+            </div>
+        </div>
+        <!-- Seleccionar el numero de cuenta del socio -->
+         <div class="col-sm-4">
+            <h5>Número de cuenta</h5>
+            <div class="ng-autocomplete2">
+                <ng-autocomplete placeHolder="Numero de cuenta"
+                    [data]="obtenerCuentaBancaria" [searchKeyword]="keyword9"
+                    [itemTemplate]="itemTemplate23"
+                    (selected)='obtenerIdCuentaBancaria($event)'
+                    [notFoundTemplate]="notFoundTemplate23">
+                </ng-autocomplete>
+
+                <ng-template #itemTemplate23 let-item>
+                    <a [innerHTML]="item.NumeroCuenta"></a>
+                </ng-template>
+
+                <ng-template #notFoundTemplate23 let-notFound>
+                    <div [innerHTML]="notFound"></div>
+                </ng-template>
+            </div>
+        </div>
+        <!-- Objeto para arrastrar los archivos tipo xslx -->
+        <div class="center" style="margin-top: 15px;">
+            <ngx-file-drop dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)" (onFileOver)="fileOver($event)"
+                (onFileLeave)="fileLeave($event)" useDragEnter="true"  [showBrowseBtn]="false">
+                <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector" >
+                    Arrastra y suelta un archivo aquí. 
+
+                    <button style="margin-left: 25px;" type="button" class="btn btn-secondary" (click)="openFileSelector()">Seleccionar archivo</button>
+                </ng-template>
+            </ngx-file-drop>
+            <br>
+            <div class="upload-table">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Nombre del archivo seleccionado: </th>
+                        </tr>
+                    </thead>
+                    <tbody class="upload-name-style" *ngIf="verDatos == 0">
+                        <tr *ngFor="let item of files; let i=index">
+                            <td><strong>{{ item.relativePath }}</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- Tabla para visualizar los pedidos del archivo -->
+        <div class="col-sm-12 table-responsive">
+            <table class="table table-hover table-responsive-xl">
+                <thead class="thead-dark" style="background-color: black; color: white;text-align: center;">
+                    <tr style="text-align: center;" *ngIf="verDatos == 1">
+                        <!-- <th *ngFor="let c of nombresColumnas" class="center">{{c}}</th> -->
+                        <th class="center">Nombre del Cliente</th>
+                        <th class="center">Telefono</th>
+                        <th class="center">Municipio de entrega</th>
+                        <th class="center">Zona</th>
+                        <th class="center">Colonia</th>
+                        <th class="center">Direccion del Contacto</th>
+                        <!-- <th class="center">Fecha de entrega</th> -->
+                        <th class="center">Solicitud de cobro</th>
+                        <th class="center">Monto</th>
+                        <th class="center">Observacion</th>
+                        <th class="center">Especificaciones</th>
+                    </tr>
+                </thead>
+                <tbody *ngFor="let c of jsonExcel | paginate: {itemsPerPage: 7, currentPage: pageChange}"  class="center" style="text-align: center;">
+                    <tr  *ngIf="verDatos == 1">
+                        <!-- <td  *ngFor="let c of listaJson">{{c}}</td> -->
+                        <td class="center">{{c.NombreContacto}}</td>
+                        <td class="center">{{c.Telefono}}</td>
+                        <td class="center">{{c.MunicipioEntrega}}</td>
+                        <td class="center">{{c.ZonaEntrega}}</td>
+                        <td class="center">{{c.ColoniaEntrega}}</td>
+                        <td class="center">{{c.DireccionContacto}}</td>
+                        <!-- <td class="center">{{c.Fecha}}</td> -->
+                        <td class="center">{{c.SolicitudCobro}}</td>
+                        <td class="center">{{c.Monto}}</td>
+                        <td class="center">{{c.Observacion}}</td>
+                        <td class="center">{{c.Especificaciones}}</td>
+                    </tr>
+                </tbody>
+        
+            </table>
+        
+            <pagination-controls  *ngIf="verDatos == 1" (pageChange)="pageChange = $event" responsive="true"
+             previousLabel="Antes" nextLabel="Siguiente">
+            </pagination-controls>
+        </div>
+        <button class="rigth" *ngIf="verDatos == 1" style="background-color: #e85327; border-color:  #e85327; font-size: 18px;" type="button" class="btn btn-primary" 
+        (click)="realizarProceso()">Realizar proceso</button>
+    </div>
+</body>
+    

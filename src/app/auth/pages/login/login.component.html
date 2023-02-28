@@ -1,0 +1,124 @@
+<body class="bg-dark-x" >
+  <section>
+    <div class="row g-0">
+      <!-- Carousel -->
+      <div class="col-lg-7 d-none  d-lg-block">
+        <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
+              aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
+              aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="3" aria-label="Slide 4"></button>
+
+          </div>
+          <div class="carousel-inner">
+            <div class="carousel-item img-1  min-vh-100 mb-auto active">
+              <!-- <div class="carousel-caption d-none d-md-block">
+                <h5>First slide label</h5>
+                <p>Some representative placeholder content for the first slide.</p>
+              </div> -->
+            </div>
+            <div class="carousel-item img-2 min-vh-100">
+              <!-- <div class="carousel-caption d-none d-md-block">
+                <h5>Second slide label</h5>
+                <p>Some representative placeholder content for the second slide.</p>
+              </div> -->
+            </div>
+            <div class="carousel-item img-3 min-vh-100">
+                        <!-- <div class="carousel-caption d-none d-md-block">
+                          <h5>Third slide label</h5>
+                          <p>Some representative placeholder content for the third slide.</p>
+                        </div> -->
+                      </div>
+            <div class="carousel-item img-4 min-vh-100">
+                        <!-- <div class="carousel-caption d-none d-md-block">
+                          <h5>Third slide label</h5>
+                          <p>Some representative placeholder content for the third slide.</p>
+                        </div> -->
+                      </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
+            data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
+            data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+      </div>
+      <!-- Formulario de autenticacion -->
+      <!-- style="background-image:  url('/assets/carousel/vector.png');background-repeat: no-repeat; background-position: left top; background-size: 100%;" -->
+      <div class="col-lg-5 d-flex flex-column align-items-end min-vh-100 formlogin" >
+
+        <div class="px-lg-5 pt-lg-4 pb-lg-3 p-4 w-100 mb-auto text-center" style="margin-top: 50px; ">
+          <img src="assets/carousel/Logo.jpeg" alt="logo_serbaco" class="img-fluid logo_serbaco">
+        </div>
+        <div class="px-lg-5 py-lg-4 p-4 w-100 align-self-center">
+          <!-- <h1 class="font-weight-bold mb-4 logo-name ">BIENVENIDO A SERBACO</h1> -->
+          <form class="mb-2" #loginform="ngForm" (ngSubmit)="login()">
+            <!-- input para el ingreso del usuario -->
+            <label for="exampleInputEmail1" class="form-label font-weight-bold">Usuario</label>
+            <div class="input-group mb-2">
+              <span class="input-group-text " id="basic-addon1"> <i class="fas fa-user fass"></i></span>
+              <input type="text" class="form-control" placeholder="Ingresa tu usuario" id="exampleInputEmail1"
+                aria-describedby="emailHelp" name="usuario" #usuario='ngModel' [(ngModel)]="user.user">
+            </div>
+            <!-- input para el ingreso de la contraseña -->
+            <label for="exampleInputPassword1" class="form-label font-weight-bold">Contraseña</label>
+            <div class="input-group mb-4">
+              <span class="input-group-text" id="basic-addon1"><i class="fas fa-lock fass"></i></span>
+              <input type="password" class="form-control  " placeholder="Ingresa tu contraseña" id="exampleInputPassword1"
+              name="password" #password='ngModel' [(ngModel)]="user.pass">
+      
+              <!-- <span class="input-group-text" id="basic-addon1"><i class="fas fa-lock"></i></span> -->
+              <!-- <span id="show-hide-passwd" action="hide" class="input-group-text "><i class="fas fa-eye fasss"></i></span> -->
+              
+              <!-- <script>
+                $(document).on('ready', function() {
+                  $('#show-hide-passwd').on('click', function(e) {
+                    e.preventDefault();
+                    alert('hola')
+                    // var current = $(this).attr('action');
+              
+                    // if (current == 'hide') {
+                    //   alert('hola')
+                    //   // $(this).prev().attr('type','text');
+                    //   // $(this).removeClass('fas fa-eye').addClass('fa-eye-slash').attr('action','show');
+                    // }
+              
+                  
+                    // if (current == 'show') {
+                    //   alert('hola')
+                    //   // $(this).prev().attr('type','password');
+                    //   // $(this).removeClass('fa-eye-slash').addClass('fas fa-eye').attr('action','hide');
+                    // }
+                  })
+                })
+              </script> -->
+            </div>
+      
+            <!-- <a href="#" id="emailHelp" class="form-text text-muted text-decoration-none mb-4">¿Has olvidado tu
+              contraseña?</a>
+       -->
+            <button type="submit" class="btn btn-primary border-0 w-100">Iniciar sesión</button>
+          </form>
+      
+        </div>
+      
+        <!-- <div class="text-center px-lg-5 pt-lg-3 pb-lg-4 p-4 w-100 mb-auto   ">
+          <p class="d-inline-block mb-0">¿Todavia no tienes una cuenta?</p><a
+            class=" font-weight-bold text-decoration-none" href="#">Crea una hora</a>
+        </div> -->
+        <footer class="text-center px-lg-5 pt-lg-3 pb-lg-4 p-4 w-100 mb-auto">
+          <p ><small>SERBACO &copy; 2021</small> </p>
+        </footer>
+      </div>
+    </div>
+  </section>
+  
+</body>

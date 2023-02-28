@@ -1,0 +1,156 @@
+<body>
+    <div class="row divPartner">
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox ">
+
+                    <div class="ibox-content">
+                        <div class="col-sm-4">
+                            <button type="button" class="btn btn-primary" style=" background-color: #e85327; border-color: #e85327; border-radius: 5px; 
+                            color: white; font-weight: bold; font-size: 17px;" (click)="domiciliarNuevo()">Creación de
+                                domiciliar</button>
+                        </div>
+                        <br>
+                        <br>
+                        <!-- Creacion de un nuevo domiciliar -->
+                        <div class="row" *ngIf="domiciliar != 0">
+                            <div class="col-lg-12">
+                                <div class="ibox ">
+                                    <form #datosSocioForm="ngForm" id="pruebaPd10" (ngSubmit)="crearDomiciliar()">
+                                        <div class="ibox-content">
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <h5>Nombres</h5>
+                                                    <input type="text" name="Nombres" #Nombres="ngModel"
+                                                        placeholder="Ingrese nombre del domiciliar" class="form-control"
+                                                        [(ngModel)]="DatosDomiciliar.Nombres" id="NombresDomiciliar">
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <h5>Apellidos</h5>
+                                                    <input type="text" name="Apellidos" #Apellidos="ngModel"
+                                                        placeholder="Ingrese el apellido del domiciliar"
+                                                        class="form-control" [(ngModel)]="DatosDomiciliar.Apellidos"
+                                                        id="ApellidosDomiciliar">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit"
+                                                style="background-color: #ed8524; border-color: #ed8524;"
+                                                class="btn btn-primary">Crear domiciliar</button>
+                                            <button type="button"
+                                                style="background-color: #343a40; border-color: #343a40;"
+                                                class="btn btn-secondary" data-dismiss="modal"
+                                                (click)="cerrarDomiciliarNuevo()">Cerrar</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Listado de domicialiares -->
+                        <div class="row table-responsive" style="margin-left: 10px;">
+                            <table class="table table-hover">
+                                <thead style="background-color: black; color: white">
+                                    <tr>
+                                        <th style="text-align: center;">ID</th>
+                                        <th style="text-align: center;">Nombres</th>
+                                        <th style="text-align: center;">Apellidos</th>
+                                        <th style="text-align: center;">Fecha de Alta</th>
+                                        <th style="text-align: center;">Fecha de Baja</th>
+                                        <th style="text-align: center;">Editar</th>
+                                        <th style="text-align: center;">Eliminar</th>
+                                    </tr>
+                                </thead>
+                                <tbody
+                                    *ngFor="let c of ObtenerListadoDomiciliar | paginate: {itemsPerPage: numeroItems, currentPage: pageActual}">
+                                    <tr>
+                                        <td style="text-align: center;">{{c.IdDomiciliar}}</td>
+                                        <td style="text-align: center;">{{c.Nombres}}</td>
+                                        <td style="text-align: center;">{{c.Apellidos}}</td>
+                                        <td style="text-align: center;">{{c.FechaAlta}}</td>
+                                        <td style="text-align: center;">{{c.FechaBaja}}</td>
+                                        <td style="text-align: center;" class="center">
+                                            <button type="button" class="btn btn-secondary" data-bs-target="#modal2"
+                                            data-bs-toggle="modal"
+                                                (click)="obtenerDomiciliarSeleccionado(c.IdDomiciliar)">
+                                                <i class="fas fa-pencil-alt"></i>
+                                            </button>
+                                        </td>
+                                        <td style="text-align: center;" class="center">
+                                            <button type="button" class="btn btn-warning" 
+                                             style="background-color: #ed8524; border-color: #ed8524;"
+                                                (click)="ElminarDomiciliarSeleccionado(c.IdDomiciliar)">
+                                                <i class="fas fa-trash" style="color: white;"></i>
+                                            </button>
+                                        </td>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <pagination-controls (pageChange)="pageActual = $event" responsive="true"
+                                previousLabel="Antes" nextLabel="Siguiente"></pagination-controls>
+                        </div>
+
+                        <!-- Edicion de los domiciliares -->
+                        <div class="modal fade" id="modal2" tabindex="-1" role="dialog"
+                            aria-labelledby="exampleModalLabel1" aria-hidden="true">
+                            <div class="modal-dialog  modal-xl modal-dialog-scrollable">
+                                <div class="modal-content">
+                                    <form #datosSocioForm="ngForm" id="pruebaPd2"
+                                        (ngSubmit)="EditarDatosDomiciliares()">
+
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Edicion del domiciliar</h5>
+                                            <button type="button" class="btn-close" #closeBUtton data-bs-dismiss="modal"
+                                                aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="ibox ">
+                                                        <div class="ibox-content">
+
+                                                            <div class="row">
+                                                                <div class="col-sm-6">
+                                                                    <h5>Nombres</h5>
+                                                                    <input type="text" name="Nombres" #Nombres="ngModel"
+                                                                        placeholder="Ingrese nombre del domiciliar"
+                                                                        class="form-control"
+                                                                        [(ngModel)]="EditarDatosDomiciliar.Nombres"
+                                                                        id="NombresDomiciliar2">
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <h5>Apellidos</h5>
+                                                                    <input type="text" name="Apellidos"
+                                                                        #Apellidos="ngModel"
+                                                                        placeholder="Ingrese el apellido del domiciliar"
+                                                                        class="form-control"
+                                                                        [(ngModel)]="EditarDatosDomiciliar.Apellidos"
+                                                                        id="ApellidosDomiciliar2">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit"  style="background-color: #ed8524; border-color: #ed8524;" class="btn btn-primary" class="btn btn-primary">Editar</button>
+                                            <button type="button"  style="background-color: #343a40; border-color: #343a40;" class="btn btn-secondary" class="btn btn-secondary" 
+                                                data-dismiss="modal">Cerrar</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

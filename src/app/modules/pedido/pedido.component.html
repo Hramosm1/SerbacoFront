@@ -1,0 +1,719 @@
+<body>
+    <div class="row divPartner">
+        <div class="container table-responsive ">
+            <h3>INGRESO DE PEDIDOS SOCIOS</h3>
+            <div id="stepper1" class="bs-stepper">
+                <div class="bs-stepper-header">
+                    <div class="step" data-target="#test-l-1">
+                        <button class="step-trigger">
+                            <span class="bs-stepper-circle" style="background-color: #343a40;">1</span>
+                            <span class="bs-stepper-label" style="color: #343a40;">Datos del socio</span>
+                        </button>
+                    </div>
+                    <div class="line"></div>
+                    <div class="step" data-target="#test-l-2">
+                        <button class="step-trigger">
+                            <span class="bs-stepper-circle" style="background-color: #343a40;">2</span>
+                            <span class="bs-stepper-label" style="color: #343a40;">Datos del cliente</span>
+                        </button>
+                    </div>
+                    <div class="line"></div>
+                    <div class="step" data-target="#test-l-3">
+                        <button class="step-trigger">
+                            <span class="bs-stepper-circle" style="background-color: #343a40;">3</span>
+                            <span class="bs-stepper-label" style="color: #343a40;">Datos del pedido</span>
+                        </button>
+                    </div>
+                    <div class="line"></div>
+                </div>
+                <div class="bs-stepper-content">
+                    <form #datosSocioForm="ngForm">
+                        <div id="test-l-1" class="content">
+                            <div class="row">
+                                <!-- Apartado para seleccionar al socio y ver sus datos -->
+                                <div class="col-sm-8" *ngIf="rolSocio == 0">
+                                    <h5>Seleccionar socio <strong style="color: red; font-size: 18px;">*</strong></h5>
+                                    <div class="ng-autocomplete2">
+                                        <ng-autocomplete placeHolder="Seleccione al socio" [data]="comboSocio"
+                                            [searchKeyword]="keyword10" [itemTemplate]="itemTemplate1"
+                                            (selected)='getIdCliente($event)' [notFoundTemplate]="notFoundTemplate1">
+                                        </ng-autocomplete>
+
+                                        <ng-template #itemTemplate1 let-item>
+                                            <a [innerHTML]="item.Socio"></a>
+                                        </ng-template>
+
+                                        <ng-template #notFoundTemplate1 let-notFound>
+                                            <div [innerHTML]="notFound"></div>
+                                        </ng-template>
+                                    </div>
+                                </div>
+
+                                <!-- <div class="row"> -->
+                                <div class="col-sm-8">
+                                    <h5>Seleccione la dirección <strong style="color: red; font-size: 18px;">*</strong>
+                                    </h5>
+                                    <div class="ng-autocomplete2">
+                                        <ng-autocomplete placeHolder="Seleccione la direccion del socio"
+                                            [data]="obtenerDireccionesSocio" [searchKeyword]="keyword1"
+                                            [itemTemplate]="itemTemplate13" (selected)='getIdDireccion($event)'
+                                            [notFoundTemplate]="notFoundTemplate13">
+                                        </ng-autocomplete>
+
+                                        <ng-template #itemTemplate13 let-item>
+                                            <a [innerHTML]="item.Direccion"></a>
+                                        </ng-template>
+
+                                        <ng-template #notFoundTemplate13 let-notFound>
+                                            <div [innerHTML]="notFound"></div>
+                                        </ng-template>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <h5>Numero de cuenta</h5>
+                                    <div class="ng-autocomplete2">
+                                        <ng-autocomplete placeHolder="Numero de cuenta" [data]="obtenerCuentaBancaria"
+                                            [searchKeyword]="keyword9" [itemTemplate]="itemTemplate23"
+                                            (selected)='obtenerIdCuentaBancaria($event)'
+                                            [notFoundTemplate]="notFoundTemplate23">
+                                        </ng-autocomplete>
+
+                                        <ng-template #itemTemplate23 let-item>
+                                            <a [innerHTML]="item.NumeroCuenta"></a>
+                                        </ng-template>
+
+                                        <ng-template #notFoundTemplate23 let-notFound>
+                                            <div [innerHTML]="notFound"></div>
+                                        </ng-template>
+                                    </div>
+                                </div>
+                                <!-- </div> -->
+                                <!-- <div class="row"> -->
+                                <div class="col-sm-8">
+                                    <h5>Dirección</h5>
+                                    <input type="text" [value]="Direccion2" id="Direccion"
+                                        placeholder="Descripcion de la direccion" class="form-control" disabled>
+                                </div>
+                                <div class="col-sm-4">
+                                    <h5>Zona</h5>
+                                    <input type="text" [value]="Zona" id="Zona" placeholder="Descripcion de la zona"
+                                        class="form-control" disabled>
+                                </div>
+                                <div class="col-sm-4">
+                                    <h5>Colonia</h5>
+                                    <input type="text" [value]="Colonia" id="Colonia"
+                                        placeholder="Descripcion de la colonia" class="form-control" disabled>
+                                </div>
+                                <div class="col-sm-4">
+                                    <h5>Municipio</h5>
+                                    <input type="text" [value]="Municipio" id="Municipio"
+                                        placeholder="Descripcion del Municipio" class="form-control" disabled>
+                                </div>
+                                <div class="col-sm-4">
+                                    <h5>Departamento</h5>
+                                    <input type="text" [value]="Departamento" id="Departamento"
+                                        placeholder="Descripcion del Departamento" class="form-control" disabled>
+                                </div>
+                                <!-- </div> -->
+                            </div>
+                            <div style=" margin-left: 80%; margin-top: 15px;">
+                                <button (click)="next(1)" class="btn btn-primary" type="button" style="background-color: #e85327; border-color:  #e85327;
+                              margin-left: 5%">SIGUIENTE</button>
+                            </div>
+
+                        </div>
+                        <div id="test-l-2" class="content">
+                            <div class="form-group">
+                                <div class="row">
+                                    <!-- Seleccionar el clientes -->
+                                    <div class="col-sm-5">
+                                        <h5>Seleccione al cliente</h5>
+                                        <div class="ng-autocomplete2">
+                                            <ng-autocomplete #auto placeHolder="Seleccione al cliente"
+                                                [data]="ObtenerClienteSocio" [searchKeyword]="keyword90"
+                                                [itemTemplate]="itemTemplate4000" (selected)='getIdClienteSocio($event)'
+                                                [notFoundTemplate]="notFoundTemplate4000">
+                                            </ng-autocomplete>
+
+                                            <ng-template #itemTemplate4000 let-item>
+                                                <a [innerHTML]="item.Nombre"></a>
+                                            </ng-template>
+
+                                            <ng-template #notFoundTemplate4000 let-notFound>
+                                                <div [innerHTML]="notFound"></div>
+                                            </ng-template>
+                                        </div>
+                                    </div>
+
+                                    <!-- Crear nuevos vlientes  -->
+                                    <div class="col-sm-4" *ngIf="IdCliente != 0">
+                                        <div class="form-check abc-checkbox abc-checkbox-info">
+                                            <input class="form-check-input" id="checkbox4" type="checkbox"
+                                                (change)="obtenerOpcionPredeterminada($event)" [value]="1">
+                                            <label class="form-check-label" for="checkbox4">
+                                                Crear nuevo cliente
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <!-- Seleccionar direccion del cliente -->
+                                    <div class="col-sm-12" *ngIf="IdCliente != 0">
+                                        <h5>Seleccione la direccion del cliente <strong
+                                                style="color: red; font-size: 18px;">*</strong></h5>
+                                        <div class="ng-autocomplete2">
+                                            <ng-autocomplete #auto placeHolder="Seleccione al cliente"
+                                                [data]="obtenerDireccionCliente" [searchKeyword]="keyword8"
+                                                [itemTemplate]="itemTemplate22"
+                                                (selected)='IdDireccionClienteSeleccionado($event)'
+                                                [notFoundTemplate]="notFoundTemplate22">
+                                            </ng-autocomplete>
+
+                                            <ng-template #itemTemplate22 let-item>
+                                                <a [innerHTML]="item.Direccion"></a>
+                                            </ng-template>
+
+                                            <ng-template #notFoundTemplate22 let-notFound>
+                                                <div [innerHTML]="notFound"></div>
+                                            </ng-template>
+                                        </div>
+                                    </div>
+
+                                    <!-- Apartado para ver los datos del cliente seleccionado -->
+                                    <div class="row" *ngIf="IdCliente != 0">
+                                        <div class="col-sm-4">
+                                            <h5>Nombre cliente</h5>
+                                            <input type="text" id="NombreCliente"
+                                                placeholder="Ingrese el nombre del cliente" class="form-control"
+                                                [value]="NombreClienteSocio" disabled>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <h5>Telefono del cliente</h5>
+                                            <input type="text" id="TelefonoCliente"
+                                                placeholder="Ingrese el Telefono del cliente" class="form-control"
+                                                [value]="TelefonoClienteSocio" disabled>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <h5>Zona</h5>
+                                            <input type="text" id="ZonaCliente" placeholder="Descripcion de la zona"
+                                                class="form-control" [value]="ZonaCliente" disabled>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <h5>Colonia</h5>
+                                            <input type="text" id="ColoniaCliente"
+                                                placeholder="Descripcion de la colonia" class="form-control"
+                                                [value]="ColoniaCliente" disabled>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <h5>Municipio</h5>
+                                            <input type="text" id="MunicipioCliente"
+                                                placeholder="Descripcion del Municipio" class="form-control"
+                                                [value]="MunicipioCliente" disabled>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <h5>Departamento</h5>
+                                            <input type="text" id="DepartamentoCliente"
+                                                placeholder="Descripcion del Departamento" class="form-control"
+                                                [value]="DepartamentoCliente" disabled>
+                                        </div>
+                                    </div>
+
+                                    <!-- Apartado para crear el cliente -->
+                                    <div class="row" *ngIf="IdCliente == 0">
+                                        <div class="col-sm-4">
+                                            <h5>Nombre cliente <strong style="color: red; font-size: 18px;">*</strong>
+                                            </h5>
+                                            <input type="text" id="NombreCliente" name="Nombre" #Nombre="ngModel"
+                                                [(ngModel)]="datosContactoSocio.Nombre"
+                                                placeholder="Ingrese el nombre del cliente" class="form-control">
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <h5>Telefono del cliente <strong
+                                                    style="color: red; font-size: 18px;">*</strong></h5>
+                                            <input type="text" id="TelefonoCliente" name="Telefono" #Telefono="ngModel"
+                                                [(ngModel)]="datosTelefono.Telefono" maxlength="10"
+                                                placeholder="Ingrese el Telefono del cliente" class="form-control">
+                                        </div>
+                                        <!-- ComboBox Tipo de telefono -->
+                                        <div class="col-sm-4">
+                                            <h5>Tipo de telefono <strong style="color: red; font-size: 18px;">*</strong>
+                                            </h5>
+                                            <div class="ng-autocomplete2">
+                                                <ng-autocomplete placeHolder="Seleccione el tipo de telefono"
+                                                    [data]="obtenertTipoTelefono" (selected)='getIdTipoTelefono($event)'
+                                                    [searchKeyword]="keyword" [itemTemplate]="itemTemplate17"
+                                                    [notFoundTemplate]="notFoundTemplate17">
+                                                </ng-autocomplete>
+
+                                                <ng-template #itemTemplate17 let-item>
+                                                    <a [innerHTML]="item.Descripcion"></a>
+                                                </ng-template>
+
+                                                <ng-template #notFoundTemplate17 let-notFound>
+                                                    <div [innerHTML]="notFound"></div>
+                                                </ng-template>
+                                            </div>
+                                        </div>
+
+                                        <!-- Direccion -->
+                                        <div class="col-sm-7">
+                                            <h5>Dirección del cliente <strong
+                                                    style="color: red; font-size: 18px;">*</strong></h5>
+                                            <div class="form-group">
+                                                <input id="Direccion" name="Direccion" #Direccion="ngModel" type="text"
+                                                    class="form-control required"
+                                                    placeholder="Ingrese la dirección del socio"
+                                                    [(ngModel)]="datosDireccionSocio.Direccion">
+                                            </div>
+                                        </div>
+                                        <!-- ComboBox Departamento -->
+                                        <div class="col-sm-4">
+                                            <h5>Departamento <strong style="color: red; font-size: 18px;">*</strong>
+                                            </h5>
+                                            <div class="ng-autocomplete2">
+                                                <ng-autocomplete #autoDepartamento
+                                                    placeHolder="Seleccione el departamento" [data]="comboDepartament"
+                                                    (selected)='getComboMunicipio($event)' [searchKeyword]="keyword"
+                                                    [itemTemplate]="itemTemplate1"
+                                                    [notFoundTemplate]="notFoundTemplate1">
+                                                </ng-autocomplete>
+
+                                                <ng-template #itemTemplate1 let-item>
+                                                    <a [innerHTML]="item.Descripcion"></a>
+                                                </ng-template>
+
+                                                <ng-template #notFoundTemplate1 let-notFound>
+                                                    <div [innerHTML]="notFound"></div>
+                                                </ng-template>
+                                            </div>
+                                        </div>
+                                        <!-- ComboBox Municipio -->
+                                        <div class="col-sm-4">
+                                            <h5>Municipio <strong style="color: red; font-size: 18px;">*</strong></h5>
+                                            <div class="ng-autocomplete2">
+                                                <ng-autocomplete #autoMunicipio placeHolder="Seleccione el Municipio"
+                                                    [data]="comboMunicipio" (selected)='getComboZona($event)'
+                                                    [searchKeyword]="keyword3" [itemTemplate]="itemTemplate2"
+                                                    [notFoundTemplate]="notFoundTemplate2">
+                                                </ng-autocomplete>
+
+                                                <ng-template #itemTemplate2 let-item>
+                                                    <a [innerHTML]="item.Descripcion"></a>
+                                                </ng-template>
+
+                                                <ng-template #notFoundTemplate2 let-notFound>
+                                                    <div [innerHTML]="notFound"></div>
+                                                </ng-template>
+                                            </div>
+                                        </div>
+                                        <!-- ComboBox Zona -->
+                                        <div class="col-sm-4">
+                                            <h5>Zona</h5>
+                                            <div class="ng-autocomplete2">
+                                                <ng-autocomplete #autoZona placeHolder="Seleccione la zona"
+                                                    [data]="comboZona" (selected)='getComboColonia($event)'
+                                                    [searchKeyword]="keyword3" [itemTemplate]="itemTemplate3"
+                                                    [notFoundTemplate]="notFoundTemplate3">
+                                                </ng-autocomplete>
+
+                                                <ng-template #itemTemplate3 let-item>
+                                                    <a [innerHTML]="item.Descripcion"></a>
+                                                </ng-template>
+
+                                                <ng-template #notFoundTemplate3 let-notFound>
+                                                    <div [innerHTML]="notFound"></div>
+                                                </ng-template>
+                                            </div>
+                                        </div>
+                                        <!-- Combo Colonia -->
+                                        <div class="col-sm-4">
+                                            <h5>Colonia</h5>
+                                            <div class="ng-autocomplete2">
+                                                <ng-autocomplete #autoColonia placeHolder="Seleccione la colonia"
+                                                    [data]="comboColonia" [searchKeyword]="keyword3"
+                                                    (selected)='getIdColonia($event)' [itemTemplate]="itemTemplate4"
+                                                    [notFoundTemplate]="notFoundTemplate4">
+                                                </ng-autocomplete>
+
+                                                <ng-template #itemTemplate4 let-item>
+                                                    <a [innerHTML]="item.Descripcion"></a>
+                                                </ng-template>
+
+                                                <ng-template #notFoundTemplate4 let-notFound>
+                                                    <div [innerHTML]="notFound"></div>
+                                                </ng-template>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <h5>Referencia direccion</h5>
+                                            <div class="form-group">
+                                                <textarea class="form-control" id="ReferenciaDireccion"
+                                                    name="ReferenciaDireccion" #ReferenciaDireccion="ngModel"
+                                                    [(ngModel)]="datosDireccionSocio.ReferenciaDireccion"
+                                                    placeholder="Ingrese la especificacion" cols="30"
+                                                    rows="2"></textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-4"></div>
+                                        <div class="col-sm-4"></div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                            <div style=" margin-left: 80%; margin-top: 15px;">
+                                <button (click)="previous()" class="btn btn-primary" type="button" style="background-color: #343a40; border-color: #343a40;
+                               ">ATRÁS</button>
+                                <button (click)="next(2)" class="btn btn-primary" type="button" style="background-color: #e85327; border-color:  #e85327;
+                              margin-left: 5%">SIGUIENTE</button>
+                            </div>
+                        </div>
+                        <div id="test-l-3" class="content">
+                            <!-- Apartado para ingresar los datos del pedido -->
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <h5>Fecha de entrega<strong style="color: red; font-size: 15px;">*</strong></h5>
+                                    <input type="date" id="FechaHoraEntrega" (change)="obtenerFecha($event)"
+                                        name="fechaHoraEntrega" [(ngModel)]="fechaHoraEntrega"
+                                        placeholder="Ingrese el Telefono del cliente" class="form-control">
+                                </div>
+                                <div class="col-sm-2">
+                                    <h5>Solicitud de cobro</h5>
+                                    <div class="form-check abc-radio abc-radio-info form-check-inline">
+                                        <input class="form-check-input" type="radio" name="SolicitudCobro"
+                                            id="SolicitudCobro1" #SolicitudCobro="ngModel"
+                                            [(ngModel)]="datosPedido.SolicitudCobro" [value]="1">
+                                        <label class="form-check-label" for="inlineRadio1"> SI
+                                        </label>
+                                    </div>
+                                    <div class="form-check abc-radio abc-radio-info form-check-inline">
+                                        <input class="form-check-input" type="radio" name="SolicitudCobro"
+                                            id="SolicitudCobro2" #SolicitudCobro="ngModel" [value]="0"
+                                            [(ngModel)]="datosPedido.SolicitudCobro">
+                                        <label class="form-check-label" for="inlineRadio2">
+                                            No </label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <h5>Tipo de pedido<strong style="color: red; font-size: 15px;">*</strong></h5>
+                                    <div class="ng-autocomplete2">
+                                        <ng-autocomplete #auto placeHolder="Seleccione el tipo pedido"
+                                            [data]="obtenertTipoPedido" [searchKeyword]="keyword4"
+                                            [itemTemplate]="itemTemplate20" (selected)='IdTipoPedidoS($event)'
+                                            [notFoundTemplate]="notFoundTemplate20">
+                                        </ng-autocomplete>
+
+                                        <ng-template #itemTemplate20 let-item>
+                                            <a [innerHTML]="item.Descripcion"></a>
+                                        </ng-template>
+
+                                        <ng-template #notFoundTemplate20 let-notFound>
+                                            <div [innerHTML]="notFound"></div>
+                                        </ng-template>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <h5>Tarifa</h5>
+                                    <div class="input-group m-b">
+
+                                        <input type="number" class="form-control" name="Monto" id="MontoT"
+                                            #Monto="ngModel" step=".01" [(ngModel)]="datosTarifaRuta.Monto">
+
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4" *ngIf="datosPedido.SolicitudCobro == 1">
+                                    <h5>Concepto de pago<strong style="color: red; font-size: 15px;">*</strong></h5>
+                                    <div class="ng-autocomplete2">
+                                        <ng-autocomplete #auto placeHolder="Seleccione el concepto de pago"
+                                            [data]="conceptoPago" [searchKeyword]="keyword7"
+                                            [itemTemplate]="itemTemplate210" (selected)='IdConceptoPagoS($event)'
+                                            [notFoundTemplate]="notFoundTemplate210">
+                                        </ng-autocomplete>
+
+                                        <ng-template #itemTemplate210 let-item>
+                                            <a [innerHTML]="item.Descripcion"></a>
+                                        </ng-template>
+
+                                        <ng-template #notFoundTemplate210 let-notFound>
+                                            <div [innerHTML]="notFound"></div>
+                                        </ng-template>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3" *ngIf="datosPedido.SolicitudCobro == 1">
+                                    <h5>Forma de pago<strong style="color: red; font-size: 15px;">*</strong></h5>
+                                    <div class="ng-autocomplete2">
+                                        <ng-autocomplete #auto placeHolder="Seleccione la forma de pago"
+                                            [data]="obtenertTipoFormaPago" [searchKeyword]="keyword7"
+                                            [itemTemplate]="itemTemplate21" (selected)='IdFormaPagoS($event)'
+                                            [notFoundTemplate]="notFoundTemplate21">
+                                        </ng-autocomplete>
+
+                                        <ng-template #itemTemplate21 let-item>
+                                            <a [innerHTML]="item.Descripcion"></a>
+                                        </ng-template>
+
+                                        <ng-template #notFoundTemplate21 let-notFound>
+                                            <div [innerHTML]="notFound"></div>
+                                        </ng-template>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3" *ngIf="datosPedido.SolicitudCobro == 1">
+                                    <h5>Monto de cobro</h5>
+                                    <div class="input-group m-b">
+                                        <input type="number" class="form-control" name="MontoCobro" id="MontoCobro"
+                                            #MontoCobro="ngModel" step=".01" [(ngModel)]="datosPedido.MontoCobro">
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-2 center" *ngIf="datosPedido.SolicitudCobro == 1">
+                                    <h5>Añadir importe de pago</h5>
+                                    <button type="button" class="btn btn-primary"
+                                        style="text-align: center; align-items: center; background-color: #e85327; border-color:  #e85327;"
+                                        (click)="agregarFormaPago()"><i class="fas fa-plus"></i></button>
+                                </div>
+                                <br>
+                                <br>
+                                <div style="margin-top: 15px;" class="col-sm-12 table-responsive"
+                                    *ngIf="datosPedido.SolicitudCobro == 1">
+                                    <table class="table" cellspacing="0" cellpadding="0" id="tablaDireccionSocio">
+                                        <thead class="thead-dark"
+                                            style="background-color: black; color: white;text-align: center;">
+                                            <tr>
+                                                <th>No.</th>
+                                                <th>Concepto de pago</th>
+                                                <th>Forma de pago</th>
+                                                <th>Monto de Cobro</th>
+                                                <th>Elimar</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody
+                                            *ngFor="let c of data  | paginate: {itemsPerPage: 7, currentPage: pageChange}">
+                                            <tr>
+                                                <td class="center">{{c.Id}}</td>
+                                                <td class="center">{{c.ConceptoPago}}</td>
+                                                <td class="center">{{c.FormaPago}}</td>
+                                                <td class="center">Q.{{c.MontoCobro}}</td>
+                                                <td class="center">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        (click)="eliminarFormaPago(c.Id)">
+                                                        <i class="fas fa-trash-alt"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot>
+                                            <td></td>
+                                            <td></td>
+                                            <td style="text-align: right;"><b>Total</b></td>
+                                            <td class="center">Q.{{total}}</td>
+                                            <td></td>
+                                        </tfoot>
+                                    </table>
+
+                                    <pagination-controls (pageChange)="pageChange = $event" responsive="true"
+                                        previousLabel="Antes" nextLabel="Siguiente">
+                                    </pagination-controls>
+
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <h5>Observaciones</h5>
+                                    <div class="form-group">
+                                        <textarea class="form-control" id="Observaciones" name="Observaciones"
+                                            #Observaciones="ngModel" [(ngModel)]="datosPedido.Observaciones"
+                                            placeholder="Ingrese la Observacion" cols="30" rows="2"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <h5>Especificaciones</h5>
+                                    <div class="form-group">
+                                        <textarea class="form-control" id="Especificaciones" name="Especificaciones"
+                                            #Especificaciones="ngModel" [(ngModel)]="datosPedido.Especificaciones"
+                                            placeholder="Ingrese la especificacion" cols="30" rows="2"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style=" margin-left: 80%; margin-top: 15px;">
+                                <button (click)="previous()" class="btn btn-primary" type="button" style="background-color: #343a40; border-color: #343a40;
+                                                       ">ATRÁS</button>
+                                <button type="button" (click)="preliminar()" class="btn btn-primary" data-bs-target="#modal10"
+                                    data-bs-toggle="modal" 
+                                    style="margin-left: 5%; background-color: #ed8524; border-color: #ed8524;"> VISTA
+                                    PRELIMINAR</button>
+                                <!-- <button style="background-color: #e85327; border-color:  #e85327;
+                                                      margin-left: 5%;" type="submit" class="btn btn-primary">GUARDAR DATOS</button> -->
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+
+    <!-- Modal para asignar los domiciliares -->
+    <div class="modal fade" id="modal10" tabindex="-1" role="dialog" style="height: 500%;" aria-labelledby="exampleModalLabel1"
+        aria-hidden="true">
+        <div class="modal-dialog  modal-xl  modal-dialog-scrollable" >
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Vista preliminar del pedido</h5>
+                    <button type="button" class="btn-close" #closeBUtton data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="height: 800px;">
+                    <div class="row">
+                        <div class="col-lg-5">
+                            <img src="assets/serbaco.png" alt="Serbaco">
+                        </div>
+
+                    </div>
+                    <br>
+                    <div class="row" style="margin-left: 0.5cm">
+                        <h5 style="color: black;">
+                            Datos Entrega
+                        </h5>
+                    </div>
+                    <br>
+                    <div class="row" style="margin-left: 0.3cm; margin-right: 0.3cm;">
+                        <table class="footable table">
+                            <tbody>
+                                <tr>
+                                    <th scope="row"
+                                        style="text-align: right; width: 175px; color: black; font-size: 15px;">Cliente:
+                                    </th>
+                                    <td style="color: black; font-size: 15px;">{{obtenerFichaPDF.Socio}}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"
+                                        style="text-align: right; width: 175px; color: black; font-size: 15px;">Nombre
+                                        quien recibe:</th>
+                                    <td style="color: black; font-size: 15px;">{{obtenerFichaPDF.NombreRecibe}}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"
+                                        style="text-align: right; width: 175px; color: black; font-size: 15px;">
+                                        Teléfono:
+                                    </th>
+                                    <td style="color: black; font-size: 15px;">{{obtenerFichaPDF.TelefonoRecibe}}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"
+                                        style="text-align: right; width: 175px; color: black; font-size: 15px;">
+                                        Dirección
+                                        donde
+                                        se recoge:</th>
+                                    <td style="color: black; font-size: 15px;">{{obtenerFichaPDF.DireccionRecepcion}}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"
+                                        style="text-align: right; width: 175px; color: black; font-size: 15px;">
+                                        Dirección
+                                        donde
+                                        se entrega:</th>
+                                    <td style="color: black; font-size: 15px;">{{obtenerFichaPDF.DireccionEntrega}}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"
+                                        style="text-align: right; width: 175px; color: black; font-size: 15px;">
+                                        Municipio
+                                        de
+                                        recepción:</th>
+                                    <td style="color: black; font-size: 15px;">{{obtenerFichaPDF.MunicipioRecepcion}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"
+                                        style="text-align: right; width: 175px; color: black; font-size: 15px;">
+                                        Municipio
+                                        de
+                                        entrega:</th>
+                                    <td style="color: black; font-size: 15px;">{{obtenerFichaPDF.MunicipioEntrega}}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"
+                                        style="text-align: right; width: 175px; color: black; font-size: 15px;">Fecha de
+                                        entrega:</th>
+                                    <td style="color: black; font-size: 15px;">{{obtenerFichaPDF.FechaHoraEntrega}}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row"
+                                        style="text-align: right; width: 175px; color: black; font-size: 15px;">Recibe
+                                        pago:
+                                    </th>
+                                    <td style="color: black; font-size: 15px;">{{obtenerFichaPDF.SolicitudCobro}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row" style="margin-left: 0.3cm; margin-right: 0.3cm;" *ngIf="datosPedido.SolicitudCobro == 1">
+                    <table class="footable table table-bordered ">
+                      <thead>
+                        <tr>
+                          <th>Concepto de pago</th>
+                          <th>Forma de pago</th>
+                          <th>Monto de Cobro</th>
+                        </tr>
+                      </thead>
+                      <tbody *ngFor="let c of data">
+                        <tr>
+                          <td style="color: black; font-size: 15px;" class="center">{{c.ConceptoPago}}</td>
+                          <td style="color: black; font-size: 15px;" class="center">{{c.FormaPago}}</td>
+                          <td style="color: black; font-size: 15px;" class="center">Q.{{c.MontoCobro}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                    <div class="row" style="margin-left: 0.3cm; margin-right: 0.3cm;">
+                        <table class="footable table table-bordered ">
+                            <thead>
+                                <tr>
+                                    <th>Producto</th>
+                                    <th>Especificacion</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="color: black; font-size: 15px;">{{obtenerFichaPDF.TipoProducto}}</td>
+                                    <td style="color: black; font-size: 15px;">{{obtenerFichaPDF.Especificaciones}}</td>
+                                    <td style="text-align: right; color: black; font-size: 15px;">
+                                        Q.{{obtenerFichaPDF.MontoCobro}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="row" style="margin-left: 0.3cm; margin-right: 0.3cm;">
+                        <table class="footable table table-bordered ">
+                            <tbody>
+                                <tr>
+                                    <th scope="row"
+                                        style="text-align: right; width: 175px; color: black; font-size: 15px;">
+                                        Observaciones:</th>
+                                    <td style="color: black; font-size: 15px;">{{obtenerFichaPDF.Observaciones}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+                <div class="modal-footer">
+                    <button type="submit" style="background-color: #e85327; border-color:  #e85327;"
+                        class="btn btn-primary" (click)="agregarPedido()">CREAR PEDIDO</button>
+                    <button type="button" style="background-color: #343a40; border-color: #343a40;"
+                        class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>

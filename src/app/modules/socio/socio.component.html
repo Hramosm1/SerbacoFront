@@ -1,0 +1,1545 @@
+<body>
+    <div class="row divPartner">
+        <div class="row">
+            <!-- Combo Box que muestra la lista de los socios -->
+            <div class="col-sm-10" *ngIf="comboBoxSocioHide == 0">
+                <h5>SELECCIONAR SOCIO</h5>
+                <div class="ng-autocomplete2">
+                    <ng-autocomplete placeHolder="Seleccione al socio" [data]="comboSocio" [searchKeyword]="keyword10"
+                        [itemTemplate]="itemTemplate13" (selected)='getIdCliente($event)'
+                        [notFoundTemplate]="notFoundTemplate13">
+                    </ng-autocomplete>
+                    <ng-template #itemTemplate13 let-item>
+                        <a [innerHTML]="item.Socio"></a>
+                    </ng-template>
+
+                    <ng-template #notFoundTemplate13 let-notFound>
+                        <div [innerHTML]="notFound"></div>
+                    </ng-template>
+                </div>
+            </div>
+            <br>
+
+            <!-- Boton para crear la creacion de nuevos socios -->
+            <!-- <div class="col-sm-12 ">
+                <h5>
+                    <button type="button" class="btn  btnCrearSocio" (click)="crearNuevoSocio()">Crear nuevo
+                        socio</button>
+                </h5>
+            </div> -->
+        </div>
+
+        <div class="container table-responsive ">
+            <div id="stepper1" class="bs-stepper">
+                <div class="bs-stepper-header">
+                    <div class="step" data-target="#test-l-1">
+                        <button class="step-trigger">
+                            <span class="bs-stepper-circle" style="background-color: #343a40;">1</span>
+                            <span class="bs-stepper-label" style="color: #343a40;">Datos del socio</span>
+                        </button>
+                    </div>
+                    <div class="line"></div>
+                    <div class="step" data-target="#test-l-2">
+                        <button class="step-trigger">
+                            <span class="bs-stepper-circle" style="background-color: #343a40;">2</span>
+                            <span class="bs-stepper-label" style="color: #343a40;">Datos del contacto</span>
+                        </button>
+                    </div>
+                    <div class="line"></div>
+                    <div class="step" data-target="#test-l-3">
+                        <button class="step-trigger">
+                            <span class="bs-stepper-circle" style="background-color: #343a40;">3</span>
+                            <span class="bs-stepper-label" style="color: #343a40;">Datos financieros</span>
+                        </button>
+                    </div>
+                    <div class="line"></div>
+                    <div class="step" data-target="#test-l-4">
+                        <button class="step-trigger">
+                            <span class="bs-stepper-circle" style="background-color: #343a40;">4</span>
+                            <span class="bs-stepper-label" style="color: #343a40;">Creación de usuario</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="bs-stepper-content">
+                    <form (ngSubmit)="agregarDatosSocio()" (click)='getComboCliente()'>
+                        <div id="test-l-1" class="content">
+                            <div class="form-group">
+                                <div class="row">
+                                    <!-- Seleccion de tipo de socio -->
+                                    <div class="col-sm-4">
+                                        <h5>Tipo de persona<strong style="color: red; font-size: 15px;">*</strong>
+                                        </h5>
+                                        <div class=" form-check abc-radio abc-radio-info form-check-inline">
+                                            <input class="form-check-input" type="radio" name="TipoPersona"
+                                                #TipoPersona="ngModel" [(ngModel)]="datosSocio.TipoPersona"
+                                                id="TipoPersona3" [value]="1" required>
+                                            <label class="form-check-label" for="inlineRadio1"> Jurídico
+                                            </label>
+                                        </div>
+                                        <div class="form-check abc-radio  abc-radio-info  form-check-inline">
+                                            <input class="form-check-input" type="radio" name="TipoPersona"
+                                                id="TipoPersona4" #TipoPersona="ngModel"
+                                                [(ngModel)]="datosSocio.TipoPersona" [value]="2" required>
+                                            <label class="form-check-label" for="inlineRadio2">
+                                                Individual </label>
+                                        </div>
+                                        <div class="invalid-feedback">Debe de ingresar una identificación del socio
+                                        </div>
+
+                                    </div>
+                                    <!-- NIT -->
+                                    <div class="col-sm-4">
+                                        <h5>NIT<strong style="color: red; font-size: 15px;">*</strong></h5>
+                                        <input type="text" name="DescripcionNit" #DescripcionNit="ngModel"
+                                            placeholder="Ingrese el NIT" class="form-control"
+                                            [(ngModel)]="datosSocio.DescripcionNit" id="DescripcionNit2">
+                                    </div>
+                                    <!-- DPI -->
+                                    <div class="col-sm-4">
+                                        <h5>DPI</h5>
+                                        <input type="text" name="IdentificacionDPI" #IdentificacionDPI="ngModel"
+                                            placeholder="Ingrese el DPI" class="form-control"
+                                            [(ngModel)]="datosSocio.IdentificacionDPI" id="IdentificacionDPI">
+
+                                    </div>
+                                    <!-- Datos del socio tipo socio -->
+                                    <div class="col-sm-4" *ngIf="datosSocio.TipoPersona == 1">
+                                        <h5>Nombre del socio<strong style="color: red; font-size: 15px;">*</strong>
+                                        </h5>
+                                        <input type="text" name="NombreEmpresa" #NombreEmpresa="ngModel"
+                                            placeholder="Ingrese nombre del socio" class="form-control"
+                                            [(ngModel)]="datosSocio.NombreSocio" id="NombreEmpresa2" required>
+                                        <div class="invalid-feedback">Debe de ingresar el nombre del socio</div>
+
+                                    </div>
+                                    <div class="col-sm-4" *ngIf="datosSocio.TipoPersona == 1">
+                                        <h5>Razón Social</h5>
+                                        <input type="text" name="RazonSocial" #RazonSocial="ngModel"
+                                            placeholder="Ingrese la razón social" class="form-control"
+                                            [(ngModel)]="datosSocio.RazonSocial" id="RazonSocial2" required>
+                                        <div class="invalid-feedback">Debe de ingresar la razón social</div>
+
+                                    </div>
+
+                                    <!-- Datos del socio tipo individual -->
+                                    <div class="col-sm-4" *ngIf="datosSocio.TipoPersona == 2">
+                                        <h5>Nombres<strong style="color: red; font-size: 15px;">*</strong></h5>
+                                        <input type="text" name="Nombres" #Nombres="ngModel"
+                                            placeholder="Ingrese los Nombres" class="form-control"
+                                            [(ngModel)]="datosSocio.Nombres" id="Nombres2" required>
+                                        <div class="invalid-feedback">Debe el nombre del socio Individual</div>
+                                    </div>
+                                    <div class="col-sm-4" *ngIf="datosSocio.TipoPersona == 2">
+                                        <h5>Apellidos<strong style="color: red; font-size: 15px;">*</strong></h5>
+                                        <input type="text" name="Apellidos" #Apellidos="ngModel"
+                                            placeholder="Ingrese los Apellidos" class="form-control"
+                                            [(ngModel)]="datosSocio.Apellidos" id="Apellidos2" required>
+                                        <div class="invalid-feedback">Debe de ingresar el apellido del socio</div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <h5>Teléfono del socio<strong style="color: red; font-size: 15px;">*</strong>
+                                        </h5>
+                                        <input type="tel" name="Telefono" maxlength="8" #Telefono="ngModel"
+                                            placeholder="Ingrese el numero telefonico" class="form-control"
+                                            [(ngModel)]="datosTelefono.Telefono" id="Telefono2" required>
+                                        <div class="invalid-feedback">Debe de ingresar el teléfono del socio</div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="row">
+                                        <!-- Direccion -->
+                                        <div class="col-sm-7">
+                                            <h5>Dirección del socio</h5>
+                                            <div class="form-group">
+                                                <input id="Direccion" name="Direccion" #Direccion="ngModel" type="text"
+                                                    class="form-control required"
+                                                    placeholder="Ingrese la dirección del socio"
+                                                    [(ngModel)]="datosDireccionSocio.Direccion">
+                                            </div>
+                                        </div>
+                                        <!-- ComboBox Departamento -->
+                                        <div class="col-sm-4">
+                                            <h5>Departamento<strong style="color: red; font-size: 15px;">*</strong>
+                                            </h5>
+                                            <div class="ng-autocomplete2">
+                                                <ng-autocomplete #autoDepartamento
+                                                    placeHolder="Seleccione el departamento" [data]="comboDepartament"
+                                                    (selected)='getComboMunicipio($event)' [searchKeyword]="keyword"
+                                                    [itemTemplate]="itemTemplate1"
+                                                    [notFoundTemplate]="notFoundTemplate1">
+                                                </ng-autocomplete>
+
+                                                <ng-template #itemTemplate1 let-item>
+                                                    <a [innerHTML]="item.Descripcion"></a>
+                                                </ng-template>
+
+                                                <ng-template #notFoundTemplate1 let-notFound>
+                                                    <div [innerHTML]="notFound"></div>
+                                                </ng-template>
+                                            </div>
+                                        </div>
+                                        <!-- ComboBox Municipio -->
+                                        <div class="col-sm-4">
+                                            <h5>Municipio<strong style="color: red; font-size: 15px;">*</strong>
+                                            </h5>
+                                            <div class="ng-autocomplete2">
+                                                <ng-autocomplete #autoMunicipio placeHolder="Seleccione el Municipio"
+                                                    [data]="comboMunicipio" (selected)='getComboZona($event)'
+                                                    [searchKeyword]="keyword2" [itemTemplate]="itemTemplate2"
+                                                    [notFoundTemplate]="notFoundTemplate2">
+                                                </ng-autocomplete>
+
+                                                <ng-template #itemTemplate2 let-item>
+                                                    <a [innerHTML]="item.Descripcion"></a>
+                                                </ng-template>
+
+                                                <ng-template #notFoundTemplate2 let-notFound>
+                                                    <div [innerHTML]="notFound"></div>
+                                                </ng-template>
+                                            </div>
+                                        </div>
+                                        <!-- ComboBox Zona -->
+                                        <div class="col-sm-4">
+                                            <h5>Zona</h5>
+                                            <div class="ng-autocomplete2">
+                                                <ng-autocomplete #autoZona placeHolder="Seleccione la zona"
+                                                    [data]="comboZona" (selected)='getComboColonia($event)'
+                                                    [searchKeyword]="keyword3" [itemTemplate]="itemTemplate3"
+                                                    [notFoundTemplate]="notFoundTemplate3">
+                                                </ng-autocomplete>
+
+                                                <ng-template #itemTemplate3 let-item>
+                                                    <a [innerHTML]="item.Descripcion"></a>
+                                                </ng-template>
+
+                                                <ng-template #notFoundTemplate3 let-notFound>
+                                                    <div [innerHTML]="notFound"></div>
+                                                </ng-template>
+                                            </div>
+                                        </div>
+                                        <!-- Combo Colonia -->
+                                        <div class="col-sm-4">
+                                            <h5>Colonia</h5>
+                                            <div class="ng-autocomplete2">
+                                                <ng-autocomplete #autoColonia placeHolder="Seleccione la colonia"
+                                                    [data]="comboColonia" [searchKeyword]="keyword4"
+                                                    (selected)='getIdColonia($event)' [itemTemplate]="itemTemplate4"
+                                                    [notFoundTemplate]="notFoundTemplate4">
+                                                </ng-autocomplete>
+
+                                                <ng-template #itemTemplate4 let-item>
+                                                    <a [innerHTML]="item.Descripcion"></a>
+                                                </ng-template>
+
+                                                <ng-template #notFoundTemplate4 let-notFound>
+                                                    <div [innerHTML]="notFound"></div>
+                                                </ng-template>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12">
+                                            <h5>Referencia dirección</h5>
+                                            <div class="form-group">
+                                                <textarea class="form-control" id="ReferenciaDireccion"
+                                                    name="ReferenciaDireccion" #ReferenciaDireccion="ngModel"
+                                                    [(ngModel)]="datosDireccionSocio.ReferenciaDireccion"
+                                                    placeholder="Ingrese la especificacion" cols="30"
+                                                    rows="2"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style=" margin-left: 80%; margin-top: 15px;">
+                                <button (click)="next()" class="btn btn-primary" type="button" style="background-color: #e85327; border-color:  #e85327;
+                                  margin-left: 5%">SIGUIENTE</button>
+                            </div>
+
+                        </div>
+                        <div id="test-l-2" class="content">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="ibox ">
+                                            <div class="ibox-content">
+                                                <div class="row">
+                                                    <div class="col-sm-4">
+                                                        <h5>Nombre del contacto</h5>
+                                                        <input type="text" name="Nombre" #Nombre="ngModel"
+                                                            placeholder="Ingrese el nombre del contacto"
+                                                            class="form-control" [(ngModel)]="datosContactoSocio.Nombre"
+                                                            id="Nombre2" required>
+                                                        <div class="invalid-feedback">Debe de ingresar el nombre del
+                                                            contacto</div>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <h5>Puesto del contacto</h5>
+                                                        <input type="text" name="Puesto" #Puesto="ngModel"
+                                                            placeholder="Ingrese el puesto del contacto"
+                                                            class="form-control" [(ngModel)]="datosContactoSocio.Puesto"
+                                                            id="Puesto2">
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <h5>Teléfono del contacto</h5>
+                                                        <input type="tel" name="Telefono" maxlength="8"
+                                                            #Telefono="ngModel"
+                                                            placeholder="Ingrese el numero telefonico"
+                                                            class="form-control"
+                                                            [(ngModel)]="datosTelefonoColaborador.Telefono"
+                                                            id="Telefono3" required>
+                                                        <div class="invalid-feedback">Debe de ingresar el teléfono
+                                                            del colaborador</div>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <h5>Tipo de teléfono<strong
+                                                                style="color: red; font-size: 15px;">*</strong></h5>
+                                                        <div class="ng-autocomplete2">
+                                                            <ng-autocomplete
+                                                                placeHolder="Seleccione el tipo de telefono"
+                                                                [data]="obtenertTipoTelefono"
+                                                                (selected)='getIdTipoTelefonoColaborador($event)'
+                                                                [searchKeyword]="keyword"
+                                                                [itemTemplate]="itemTemplate41"
+                                                                [notFoundTemplate]="notFoundTemplate41">
+                                                            </ng-autocomplete>
+
+                                                            <ng-template #itemTemplate41 let-item>
+                                                                <a [innerHTML]="item.Descripcion"></a>
+                                                            </ng-template>
+
+                                                            <ng-template #notFoundTemplate41 let-notFound>
+                                                                <div [innerHTML]="notFound"></div>
+                                                            </ng-template>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <h5>Correo del contacto</h5>
+                                                        <input type="email" name="Email" #Email="ngModel"
+                                                            placeholder="Ingrese el correo" class="form-control"
+                                                            [(ngModel)]="datosCorreo.Email" id="Email2">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style=" margin-left: 80%; margin-top: 15px;">
+                                <button (click)="previous()" class="btn btn-primary" type="button" style="background-color: #343a40; border-color: #343a40;
+                                   ">ATRÁS</button>
+                                <button (click)="next()" class="btn btn-primary" type="button" style="background-color: #e85327; border-color:  #e85327;
+                                  margin-left: 5%">SIGUIENTE</button>
+                            </div>
+                        </div>
+                        <div id="test-l-3" class="content">
+                            <div class="row">
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <h5>Banco<strong style="color: red; font-size: 15px;">*</strong></h5>
+                                        <div class="ng-autocomplete2">
+                                            <ng-autocomplete placeHolder="Seleccione el banco" [data]="comboBanco"
+                                                [searchKeyword]="keyword7" [itemTemplate]="itemTemplate5"
+                                                (selected)='getIdBanco($event)' [notFoundTemplate]="notFoundTemplate5">
+                                            </ng-autocomplete>
+
+                                            <ng-template #itemTemplate5 let-item>
+                                                <a [innerHTML]="item.Descripcion"></a>
+                                            </ng-template>
+
+                                            <ng-template #notFoundTemplate5 let-notFound>
+                                                <div [innerHTML]="notFound"></div>
+                                            </ng-template>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-4">
+                                        <h5>Tipo cuenta bancaria<strong style="color: red; font-size: 15px;">*</strong>
+                                        </h5>
+                                        <div class="ng-autocomplete2">
+                                            <ng-autocomplete placeHolder="Seleccione el tipo de cuenta bancaria"
+                                                [data]="comboTipoCuenta" [searchKeyword]="keyword7"
+                                                (selected)='getIdTipoCuenta($event)' [itemTemplate]="itemTemplate6"
+                                                [notFoundTemplate]="notFoundTemplate6">
+                                            </ng-autocomplete>
+
+                                            <ng-template #itemTemplate6 let-item>
+                                                <a [innerHTML]="item.Descripcion"></a>
+                                            </ng-template>
+
+                                            <ng-template #notFoundTemplate6 let-notFound>
+                                                <div [innerHTML]="notFound"></div>
+                                            </ng-template>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-4">
+                                        <h5>Número de cuenta bancaria</h5>
+                                        <input type="text" name="NumeroCuenta" #NumeroCuenta="ngModel"
+                                            placeholder="Numero de cuenta bancaria" class="form-control"
+                                            [(ngModel)]="datosFinancieros.NumeroCuenta" id="NumeroCuenta">
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <h5>Nombre de la cuenta</h5>
+                                        <input type="text" name="NombreCuenta" #NombreCuenta="ngModel"
+                                            placeholder="Ingrese el nombre de la cuenta" class="form-control"
+                                            [(ngModel)]="datosFinancieros.NombreCuenta" id="NombreCuenta">
+                                    </div>
+                                </div>
+                            </div>
+                            <div style=" margin-left: 80%; margin-top: 15px;">
+                                <button (click)="previous()" class="btn btn-primary" type="button" style="background-color: #343a40; border-color: #343a40;
+                                   ">ATRÁS</button>
+                                <button (click)="next()" class="btn btn-primary" type="button" style="background-color: #e85327; border-color:  #e85327;
+                                  margin-left: 5%">SIGUIENTE</button>
+                            </div>
+                        </div>
+                        <div id="test-l-4" class="content">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <h5>Usuario del socio</h5>
+                                    <input type="text" name="Usuarios" #Usuarios="ngModel"
+                                        placeholder="Ingrese el usuario del socio" class="form-control"
+                                        [(ngModel)]="datosCuentaSocio.Usuarios" id="usuario" required>
+                                    <div class="invalid-feedback">Debe de ingresar el usuario del socio</div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <h5>Contraseña del usuario</h5>
+                                    <input type="text" name="Password" #Password="ngModel"
+                                        placeholder="Ingrese la Contraseña del socio" class="form-control"
+                                        [(ngModel)]="datosCuentaSocio.Password" id="password" required>
+                                    <div class="invalid-feedback">Debe de ingresar la Contraseña del usuario</div>
+                                </div>
+                            </div>
+                            <div style=" margin-left: 80%; margin-top: 15px;">
+                                <button (click)="previous()" class="btn btn-primary" type="button" style="background-color: #343a40; border-color: #343a40;
+                                   ">ATRÁS</button>
+                                <button style="background-color: #e85327; border-color:  #e85327;
+                                  margin-left: 5%;" type="submit" class="btn btn-primary">GUARDAR DATOS</button>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="accordion accordion-flush acordeon" id="accordionFlushExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-headingOne">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#flush-collapseOne" aria-expanded="true" aria-controls="flush-collapseOne">
+                        Datos del socio
+                    </button>
+                </h2>
+                <div id="flush-collapseOne" class="accordion-collapse collapse show" aria-labelledby="flush-headingOne"
+                    data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">
+                        <form #formAddTarea="ngForm">
+                            <div class="ibox-content">
+                                <div class="row" *ngIf="botonActualizarSocio == 0">
+                                    <div class="col-sm-4">
+                                        <h5>NIT</h5>
+                                        <input type="text" name="DescripcionNit" #DescripcionNit="ngModel"
+                                            placeholder="Ingrese el NIT" class="form-control" required
+                                            [(ngModel)]="obtenerDatosEmpresa.DescripcionNit" id="DescripcionNit2"
+                                            disabled>
+
+                                    </div>
+                                    <div class="col-sm-4" *ngIf="obtenerDatosEmpresa.DPI != null">
+                                        <h5>DPI</h5>
+                                        <input type="text" name="DPI" #DPI="ngModel" placeholder="Ingrese el DPI"
+                                            class="form-control" required [(ngModel)]="obtenerDatosEmpresa.DPI"
+                                            id="DPI2" disabled>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <h5>Tipo de persona</h5>
+                                        <div class="form-check abc-radio abc-radio-info form-check-inline">
+                                            <input class="form-check-input" type="radio" name="TipoPersona"
+                                                #TipoPersona="ngModel" [(ngModel)]="obtenerDatosEmpresa.TipoPersona"
+                                                id="TipoPersona3" [value]="1" disabled>
+                                            <label class="form-check-label" for="inlineRadio1"> Juridico
+                                            </label>
+                                        </div>
+                                        <div class="form-check abc-radio abc-radio-info form-check-inline">
+                                            <input class="form-check-input" type="radio" name="TipoPersona"
+                                                id="TipoPersona4" #TipoPersona="ngModel"
+                                                [(ngModel)]="obtenerDatosEmpresa.TipoPersona" [value]="2" disabled>
+                                            <label class="form-check-label" for="inlineRadio2">
+                                                Individual </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4" *ngIf="obtenerDatosEmpresa.TipoPersona == 1">
+                                        <h5>Nombre del socio</h5>
+                                        <input type="text" name="NombreEmpresa" #NombreEmpresa="ngModel"
+                                            placeholder="Ingrese nombre del socio" class="form-control"
+                                            [(ngModel)]="obtenerDatosEmpresa.NombreSocio" id="NombreEmpresa2" disabled>
+                                    </div>
+                                    <div class="col-sm-4" *ngIf="obtenerDatosEmpresa.TipoPersona == 1">
+                                        <h5>Razón Social</h5>
+                                        <input type="text" name="RazonSocial" #RazonSocial="ngModel"
+                                            placeholder="Ingrese la razón social" class="form-control"
+                                            [(ngModel)]="obtenerDatosEmpresa.RazonSocial" id="RazonSocial2" disabled>
+                                    </div>
+                                    <div class="col-sm-4" *ngIf="obtenerDatosEmpresa.TipoPersona == 2">
+                                        <h5>Nombres</h5>
+                                        <input type="text" name="Nombres" #Nombres="ngModel"
+                                            placeholder="Ingrese los Nombres" class="form-control"
+                                            [(ngModel)]="obtenerDatosEmpresa.Nombres" id="Nombres2" disabled>
+                                    </div>
+                                    <div class="col-sm-4" *ngIf="obtenerDatosEmpresa.TipoPersona == 2">
+                                        <h5>Apellidos</h5>
+                                        <input type="text" name="Apellidos" #Apellidos="ngModel"
+                                            placeholder="Ingrese los Apellidos" class="form-control"
+                                            [(ngModel)]="obtenerDatosEmpresa.Apellidos" id="Apellidos2" disabled>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <h5>Telefono del socio</h5>
+                                        <input type="text" name="Telefono" #Telefono="ngModel"
+                                            placeholder="Ingrese el telefono del socio" class="form-control" required
+                                            [(ngModel)]="obtenerDatosEmpresa.Telefono" id="Telefono6" disabled>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row" *ngIf="botonActualizarSocio == 1">
+                                    <!-- <form #datosSocioForm="ngForm" (ngSubmit)="agregarDireccionSocio()"> -->
+
+                                    <div class="col-sm-4">
+                                        <h5>NIT</h5>
+                                        <input type="text" name="DescripcionNit" #DescripcionNit="ngModel"
+                                            placeholder="Ingrese el NIT" class="form-control" required
+                                            [(ngModel)]="obtenerDatosEmpresa.DescripcionNit" id="DescripcionNit2">
+
+                                    </div>
+
+                                    <div class="col-sm-4">
+                                        <h5>DPI</h5>
+                                        <input type="text" name="DPI" #DPI="ngModel" placeholder="Ingrese el DPI"
+                                            class="form-control" required [(ngModel)]="obtenerDatosEmpresa.DPI"
+                                            id="DPI2">
+                                    </div>
+
+                                    <div class="col-sm-4">
+                                        <h5>Tipo de persona</h5>
+                                        <div class="form-check abc-radio abc-radio-info form-check-inline">
+                                            <input class="form-check-input" type="radio" name="TipoPersona"
+                                                #TipoPersona="ngModel" [(ngModel)]="obtenerDatosEmpresa.TipoPersona"
+                                                id="TipoPersona3" [value]="1">
+                                            <label class="form-check-label" for="inlineRadio1"> Juridico
+                                            </label>
+                                        </div>
+                                        <div class="form-check abc-radio abc-radio-info form-check-inline">
+                                            <input class="form-check-input" type="radio" name="TipoPersona"
+                                                id="TipoPersona4" #TipoPersona="ngModel"
+                                                [(ngModel)]="obtenerDatosEmpresa.TipoPersona" [value]="2">
+                                            <label class="form-check-label" for="inlineRadio2">
+                                                Individual </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4" *ngIf="obtenerDatosEmpresa.TipoPersona == 1">
+                                        <h5>Nombre del socio</h5>
+                                        <input type="text" name="NombreEmpresa" #NombreEmpresa="ngModel"
+                                            placeholder="Ingrese nombre del socio" class="form-control"
+                                            [(ngModel)]="obtenerDatosEmpresa.NombreSocio" id="NombreEmpresa2">
+                                    </div>
+                                    <div class="col-sm-4" *ngIf="obtenerDatosEmpresa.TipoPersona == 1">
+                                        <h5>Razón Social</h5>
+                                        <input type="text" name="RazonSocial" #RazonSocial="ngModel"
+                                            placeholder="Ingrese la razón social" class="form-control"
+                                            [(ngModel)]="obtenerDatosEmpresa.RazonSocial" id="RazonSocial2">
+                                    </div>
+                                    <div class="col-sm-4" *ngIf="obtenerDatosEmpresa.TipoPersona == 2">
+                                        <h5>Nombres</h5>
+                                        <input type="text" name="Nombres" #Nombres="ngModel"
+                                            placeholder="Ingrese los Nombres" class="form-control"
+                                            [(ngModel)]="obtenerDatosEmpresa.Nombres" id="Nombres2">
+                                    </div>
+                                    <div class="col-sm-4" *ngIf="obtenerDatosEmpresa.TipoPersona == 2">
+                                        <h5>Apellidos</h5>
+                                        <input type="text" name="Apellidos" #Apellidos="ngModel"
+                                            placeholder="Ingrese los Apellidos" class="form-control"
+                                            [(ngModel)]="obtenerDatosEmpresa.Apellidos" id="Apellidos2">
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <h5>Telefono del socio</h5>
+                                        <input type="text" name="Telefono" #Telefono="ngModel"
+                                            placeholder="Ingrese el telefono del socio" class="form-control" required
+                                            [(ngModel)]="obtenerDatosEmpresa.Telefono" id="Telefono6">
+                                    </div>
+
+                                </div>
+                                <br>
+                                <div class="row" *ngIf="botonActualizarSocio == 1">
+                                    <div class="col-sm-10">
+                                        <h5></h5>
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <h5></h5>
+                                        <button class="btn btn-primary"
+                                            style="background-color: #ed8524; border-color: #ed8524;"
+                                            (click)="editarSocio()">Editar</button>
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <h5></h5>
+                                        <button type="button" class="btn btn-secondary"
+                                            style="background-color: #343a40;" (click)="cerrarEdicionDatosSocio()"
+                                            data-dismiss="modal">Cerrar</button>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+
+                                    <div class="col-sm-4">
+                                        <button type="button" style="background-color: #343a40;"
+                                            (click)="editarDatosSocio()" class="btn btn-secondary">
+                                            <i class="fas fa-pencil-alt"></i> Editar datos del socio
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-headingTwo">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                        Datos dirección del socio
+                    </button>
+                </h2>
+                <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
+                    data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">
+
+                        <button style="background-color: #343a40; border-color: #343a40;" type="button"
+                            class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal2">
+                            <i class="fas fa-money-check-edit-alt"></i>
+                            Agregar direcciones a los socios</button>
+
+                        <br>
+                        <br>
+
+                        <div class="row" *ngIf="botonActualizarDireccionSocio == 1">
+                            <!-- Direccion -->
+                            <div class="col-sm-7">
+                                <h5>Dirección del socio</h5>
+                                <div class="form-group">
+                                    <input id="Direccion5" name="Direccion" #Direccion="ngModel" type="text"
+                                        class="form-control required" placeholder="Ingrese la dirección del socio"
+                                        [(ngModel)]="obtenerDireccionSocioId.Direccion">
+                                </div>
+                            </div>
+                            <!-- ComboBox Departamento Seleccionado-->
+                            <div class="col-sm-4">
+                                <h5>Departamento</h5>
+                                <div class="ng-autocomplete2">
+                                    <ng-autocomplete placeHolder="Seleccione el departamento" name="Departamento"
+                                        [(ngModel)]="obtenerDireccionSocioId.Departamento" [data]="comboDepartament"
+                                        (selected)='getComboMunicipio($event)' [searchKeyword]="keyword"
+                                        [itemTemplate]="itemTemplate1" [notFoundTemplate]="notFoundTemplate1">
+                                    </ng-autocomplete>
+
+                                    <ng-template #itemTemplate1 let-item>
+                                        <a [innerHTML]="item.Descripcion"></a>
+                                    </ng-template>
+
+                                    <ng-template #notFoundTemplate1 let-notFound>
+                                        <div [innerHTML]="notFound"></div>
+                                    </ng-template>
+                                </div>
+                            </div>
+
+                            <!-- ComboBox Municipio -->
+                            <div class="col-sm-4">
+                                <h5>Municipio</h5>
+                                <div class="ng-autocomplete2">
+                                    <ng-autocomplete placeHolder="Seleccione el Municipio" name="Municipio"
+                                        [(ngModel)]="obtenerDireccionSocioId.Municipio" [data]="comboMunicipio"
+                                        (selected)='getComboZona($event)' [searchKeyword]="keyword2"
+                                        [itemTemplate]="itemTemplate2" [notFoundTemplate]="notFoundTemplate2">
+                                    </ng-autocomplete>
+
+                                    <ng-template #itemTemplate2 let-item>
+                                        <a [innerHTML]="item.Descripcion"></a>
+                                    </ng-template>
+
+                                    <ng-template #notFoundTemplate2 let-notFound>
+                                        <div [innerHTML]="notFound"></div>
+                                    </ng-template>
+                                </div>
+                            </div>
+                            <!-- ComboBox Zona -->
+                            <div class="col-sm-4" *ngIf="visualizarComboZona == 1">
+                                <h5>Zona</h5>
+                                <div class="ng-autocomplete2">
+                                    <ng-autocomplete placeHolder="Seleccione la zona" name="Zona"
+                                        [(ngModel)]="obtenerDireccionSocioId.Zona" [data]="comboZona"
+                                        (selected)='getComboColonia($event)' [searchKeyword]="keyword3"
+                                        [itemTemplate]="itemTemplate3" [notFoundTemplate]="notFoundTemplate3">
+                                    </ng-autocomplete>
+
+                                    <ng-template #itemTemplate3 let-item>
+                                        <a [innerHTML]="item.Descripcion"></a>
+                                    </ng-template>
+
+                                    <ng-template #notFoundTemplate3 let-notFound>
+                                        <div [innerHTML]="notFound"></div>
+                                    </ng-template>
+                                </div>
+                            </div>
+
+                            <!-- ComboBox Zona -->
+                            <div class="col-sm-4" *ngIf="visualizarComboZona == 0">
+                                <h5>Zona</h5>
+                                <div class="ng-autocomplete2">
+                                    <ng-autocomplete placeHolder="Seleccione la zona" [data]="comboZona"
+                                        (selected)='getComboColonia($event)' [searchKeyword]="keyword3"
+                                        [itemTemplate]="itemTemplate3" [notFoundTemplate]="notFoundTemplate3">
+                                    </ng-autocomplete>
+
+                                    <ng-template #itemTemplate3 let-item>
+                                        <a [innerHTML]="item.Descripcion"></a>
+                                    </ng-template>
+
+                                    <ng-template #notFoundTemplate3 let-notFound>
+                                        <div [innerHTML]="notFound"></div>
+                                    </ng-template>
+                                </div>
+                            </div>
+
+                            <!-- Combo Colonia cuando hay creado en el base de datos-->
+                            <div class="col-sm-4" *ngIf="visualizarComboColonia == 1">
+                                <h5>Colonia</h5>
+                                <div class="ng-autocomplete2">
+                                    <ng-autocomplete placeHolder="Seleccione la colonia" name="Colonia"
+                                        [(ngModel)]="obtenerDireccionSocioId.Colonia" [data]="comboColonia"
+                                        [searchKeyword]="keyword4" (selected)='getIdColonia($event)'
+                                        [itemTemplate]="itemTemplate53" [notFoundTemplate]="notFoundTemplate53">
+                                    </ng-autocomplete>
+
+                                    <ng-template #itemTemplate53 let-item>
+                                        <a [innerHTML]="item.Descripcion"></a>
+                                    </ng-template>
+
+                                    <ng-template #notFoundTemplate53 let-notFound>
+                                        <div [innerHTML]="notFound"></div>
+                                    </ng-template>
+                                </div>
+                            </div>
+
+                            <!-- Combo Colonia por si en la base de datos esta en null-->
+                            <div class="col-sm-4" *ngIf="visualizarComboColonia == 0">
+                                <h5>Colonia</h5>
+                                <div class="ng-autocomplete2">
+                                    <ng-autocomplete placeHolder="Seleccione la colonia" [data]="comboColonia"
+                                        [searchKeyword]="keyword4" (selected)='getIdColonia($event)'
+                                        [itemTemplate]="itemTemplate53" [notFoundTemplate]="notFoundTemplate53">
+                                    </ng-autocomplete>
+
+                                    <ng-template #itemTemplate53 let-item>
+                                        <a [innerHTML]="item.Descripcion"></a>
+                                    </ng-template>
+
+                                    <ng-template #notFoundTemplate53 let-notFound>
+                                        <div [innerHTML]="notFound"></div>
+                                    </ng-template>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12">
+                                <h5>Referencia direccion</h5>
+                                <div class="form-group">
+                                    <textarea class="form-control" id="ReferenciaDireccion4" name="ReferenciaDireccion"
+                                        #ReferenciaDireccion="ngModel"
+                                        [(ngModel)]="obtenerDireccionSocioId.ReferenciaDireccion"
+                                        placeholder="Ingrese la especificacion" cols="30" rows="2"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-8">
+                                <h5> </h5>
+                            </div>
+
+                            <div class="col-sm-1">
+                                <h5> </h5>
+                                <button class="btn btn-primary"
+                                    style="background-color: #ed8524; border-color: #ed8524;"
+                                    (click)="editarDatosDireccionSocio()">Editar</button>
+                            </div>
+                            <div class="col-sm-1">
+                                <h5> </h5>
+                                <button style="background-color: #343a40; border-color: #343a40;" type="button"
+                                    class="btn btn-secondary" (click)="cerrarEdicionDireccionSocio()"
+                                    data-dismiss="modal">Cerrar</button>
+                            </div>
+
+                        </div>
+                        <br>
+                        <br>
+                        <br>
+
+                        <div class="table-responsive">
+                            <table class="table table-sm  table-responsive-xl">
+                                <thead class="thead-dark"
+                                    style="background-color: black; color: white;text-align: center;">
+                                    <tr>
+                                        <th>DIRECCIÓN</th>
+                                        <th>ZONA</th>
+                                        <th>COLONIA</th>
+                                        <th>MUNICIPIO</th>
+                                        <th>DEPARTAMENTO</th>
+                                        <th>REFERENCIA DIRECCIÓN</th>
+                                        <th>EDITAR</th>
+                                    </tr>
+                                </thead>
+                                <tbody *ngFor="let c of listarDireccion " style="text-align: center;">
+                                    <tr>
+                                        <td class="center">{{c.Direccion}}</td>
+                                        <td class="center">{{c.Zona}}</td>
+                                        <td class="center">{{c.Colonia}}</td>
+                                        <td class="center">{{c.Municipio}}</td>
+                                        <td class="center">{{c.Departamento}}</td>
+                                        <td class="center">{{c.ReferenciaDireccion}}</td>
+                                        <td class="center">
+                                            <button type="button" (click)="ObtenerIdDireccion(c.IdDireccion)"
+                                                class="btn btn-secondary">
+                                                <i class="fas fa-pencil-alt"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-headingThree">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                        Contactos(cliente/colaboradores) del socio
+                    </button>
+                </h2>
+                <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree"
+                    data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">
+                        <button style="background-color: #343a40; border-color: #343a40;" type="button"
+                            class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal3">
+                            <i class="fas fa-money-check-edit-alt"></i>
+                            Agregar datos del contacto</button>
+                        <br>
+                        <br>
+
+                        <div class="row" *ngIf="botonActualizarDatosContacto == 1">
+                            <!-- Nombre del contacto -->
+                            <div class="col-sm-4">
+                                <h5>Nombre del contacto</h5>
+                                <input type="text" name="Nombre" #Nombre="ngModel"
+                                    placeholder="Ingrese el nombre del contacto" class="form-control"
+                                    [(ngModel)]="obtenerDatoContactoId.Nombre" id="Nombre8">
+                            </div>
+                            <!-- Puesto del contacto -->
+                            <div class="col-sm-4">
+                                <h5>Puesto del contacto</h5>
+                                <input type="text" name="Puesto" #Puesto="ngModel"
+                                    placeholder="Ingrese el puesto del contacto" class="form-control"
+                                    [(ngModel)]="obtenerDatoContactoId.Puesto" id="Puesto8">
+                            </div>
+                            <!-- Telefono del contacto  -->
+                            <div class="col-sm-3">
+                                <h5>Telefono del contacto</h5>
+                                <input type="tel" name="Telefono" maxlength="8" #Telefono="ngModel"
+                                    placeholder="Ingrese el numero telefonico" class="form-control"
+                                    [(ngModel)]="obtenerDatoContactoId.Telefono" id="Telefono8" required>
+                                <div class="invalid-feedback">Debe de ingresar el telefono del colaborador</div>
+                            </div>
+                            <!-- Tipo de telefono -->
+                            <div class="col-sm-4">
+                                <h5>Tipo de telefono</h5>
+                                <div class="ng-autocomplete2">
+                                    <ng-autocomplete placeHolder="Seleccione el tipo de telefono"
+                                        [data]="obtenertTipoTelefono" name="TipoTelefono"
+                                        [(ngModel)]="obtenerDatoContactoId.TipoDeTelefono"
+                                        (selected)='getIdTipoTelefonoColaborador($event)' [searchKeyword]="keyword"
+                                        [itemTemplate]="itemTemplate50" [notFoundTemplate]="notFoundTemplate50">
+                                    </ng-autocomplete>
+
+                                    <ng-template #itemTemplate50 let-item>
+                                        <a [innerHTML]="item.Descripcion"></a>
+                                    </ng-template>
+
+                                    <ng-template #notFoundTemplate50 let-notFound>
+                                        <div [innerHTML]="notFound"></div>
+                                    </ng-template>
+                                </div>
+                            </div>
+                            <!-- Correo del contacto -->
+                            <div class="col-sm-8">
+                                <h5>Correo del contacto</h5>
+                                <input type="email" name="Email" #Email="ngModel" placeholder="Ingrese el correo"
+                                    class="form-control" [(ngModel)]="obtenerDatoContactoId.Email" id="Email3">
+                            </div>
+
+                            <div class="col-sm-8">
+                                <h5> </h5>
+                            </div>
+
+                            <div class="col-sm-1">
+                                <h5> </h5>
+                                <button class="btn btn-primary"
+                                    style="background-color: #ed8524; border-color: #ed8524;"
+                                    (click)="editarDatosContactos()">Editar</button>
+                            </div>
+                            <div class="col-sm-1">
+                                <h5> </h5>
+                                <button type="button" style="background-color: #343a40; border-color: #343a40;"
+                                    class="btn btn-secondary" (click)="cerrarEdicionDatosContactoSocio()"
+                                    data-dismiss="modal">Cerrar</button>
+                            </div>
+
+                        </div>
+
+                        <br>
+                        <br>
+                        <div class="table-responsive">
+                            <table class="table table-sm  table-responsive-xl">
+                                <thead class="thead-dark"
+                                    style="background-color: black; color: white;text-align: center;">
+                                    <tr>
+                                        <th>NOMBRE</th>
+                                        <th>PUESTO</th>
+                                        <th>TELEFONO</th>
+                                        <th>TIPO DE TELEFONO</th>
+                                        <th>TIPO DE CONTACTO</th>
+                                        <th>CORREO ELECTRONICO</th>
+                                        <th>EDITAR</th>
+                                    </tr>
+                                </thead>
+                                <tbody style="text-align: center;"
+                                    *ngFor="let s of listarContacto | paginate: {itemsPerPage: 15  , currentPage: pageActual2}">
+                                    <tr>
+                                        <td>{{s.Nombre}}</td>
+                                        <td>{{s.Puesto}}</td>
+                                        <td>{{s.Telefono}}</td>
+                                        <td>{{s.TipoDeTelefono}}</td>
+                                        <td class="center">{{s.TipoContacto}}
+                                        </td>
+                                        <td>{{s.Email}}</td>
+                                        <td class="center">
+                                            <button type="button" class="btn btn-secondary"
+                                                (click)="ObtenerIdContacto(s.IdContacto)">
+                                                <i class="fas fa-pencil-alt"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <pagination-controls (pageChange)="pageActual2 = $event" responsive="true"
+                                    previousLabel="Antes" nextLabel="Siguiente">
+                                </pagination-controls>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-headingFour">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
+                        Datos financieros del socio
+                    </button>
+                </h2>
+                <div id="flush-collapseFour" class="accordion-collapse collapse" aria-labelledby="flush-headingFour"
+                    data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">
+                        <button style="background-color: #343a40; border-color: #343a40;" type="button"
+                            class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal5">
+                            <i class="fas fa-money-check-edit-alt"></i>
+                            Agregar datos financieros</button>
+                        <!-- Objetos para editar la cuenta financiera del socio -->
+                        <br>
+                        <div class="row" *ngIf="botonActualizarDatosFinancieros == 1">
+
+                            <div class="col-sm-4">
+                                <h5>Banco</h5>
+                                <div class="ng-autocomplete2">
+                                    <ng-autocomplete placeHolder="Seleccione el banco" name="Banco"
+                                        [(ngModel)]="obtenerDatosFinancierosId.Banco" [data]="comboBanco"
+                                        [searchKeyword]="keyword7" [itemTemplate]="itemTemplate5"
+                                        (selected)='getIdBanco($event)' [notFoundTemplate]="notFoundTemplate5">
+                                    </ng-autocomplete>
+
+                                    <ng-template #itemTemplate5 let-item>
+                                        <a [innerHTML]="item.Descripcion"></a>
+                                    </ng-template>
+
+                                    <ng-template #notFoundTemplate5 let-notFound>
+                                        <div [innerHTML]="notFound"></div>
+                                    </ng-template>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <h5>Tipo cuenta bancaria</h5>
+                                <div class="ng-autocomplete2">
+                                    <ng-autocomplete name="TipoCuenta"
+                                        [(ngModel)]="obtenerDatosFinancierosId.TipoCuenta"
+                                        placeHolder="Seleccione el tipo de cuenta bancaria" [data]="comboTipoCuenta"
+                                        [searchKeyword]="keyword7" (selected)='getIdTipoCuenta($event)'
+                                        [itemTemplate]="itemTemplate6" [notFoundTemplate]="notFoundTemplate6">
+                                    </ng-autocomplete>
+
+                                    <ng-template #itemTemplate6 let-item>
+                                        <a [innerHTML]="item.Descripcion"></a>
+                                    </ng-template>
+
+                                    <ng-template #notFoundTemplate6 let-notFound>
+                                        <div [innerHTML]="notFound"></div>
+                                    </ng-template>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <h5>Numero de cuenta bancaria</h5>
+                                <input type="text" name="NumeroCuenta" #NumeroCuenta="ngModel"
+                                    placeholder="Numero de cuenta bancaria" class="form-control"
+                                    [(ngModel)]="obtenerDatosFinancierosId.NumeroCuenta" id="NumeroCuenta2">
+                            </div>
+                            <div class="col-sm-4">
+                                <h5>Nombre de la cuenta</h5>
+                                <input type="text" name="NombreCuenta" #NombreCuenta="ngModel"
+                                    placeholder="Ingrese el nombre de la cuenta" class="form-control"
+                                    [(ngModel)]="obtenerDatosFinancierosId.NombreCuenta" id="NombreCuenta2">
+                            </div>
+
+
+                        </div>
+                        <div class="row" *ngIf="botonActualizarDatosFinancieros == 1">
+                            <div class="col-sm-8">
+                                <h5> </h5>
+                            </div>
+                            <div class="col-sm-1">
+                                <h5> </h5>
+                                <button class="btn btn-primary" (click)="editarDatosFinancieros()"
+                                    style="background-color: #ed8524; border-color: #ed8524;">Editar</button>
+                            </div>
+                            <div class="col-sm-1">
+                                <h5> </h5>
+                                <button type="button" class="btn btn-secondary"
+                                    (click)="cerrarEdicionDatosFinancieros()" data-dismiss="modal"
+                                    style="background-color: #343a40; border-color: #343a40;">Cerrar</button>
+                            </div>
+                        </div>
+                        <br>
+                        <br>
+                        <div class="table-responsive">
+                            <table class="table table-sm  table-responsive-xl">
+                                <thead class="thead-dark"
+                                    style="background-color: black; color: white;text-align: center;">
+                                    <tr>
+                                        <th>BANCO</th>
+                                        <th>TIPO DE CUENTA</th>
+                                        <th>NUMERO DE CUENTA</th>
+                                        <th>NOMBRE DE LA CUENTA</th>
+                                        <th>EDITAR</th>
+                                    </tr>
+                                </thead>
+                                <tbody *ngFor="let c of listarDatosFinancieros" style="text-align: center;">
+                                    <tr>
+                                        <td>{{c.Banco}}</td>
+                                        <td>{{c.TipoCuenta}}</td>
+                                        <td>{{c.NumeroCuenta}}</td>
+                                        <td>{{c.NombreCuenta}}</td>
+                                        <td class="center">
+                                            <button type="button" class="btn btn-secondary"
+                                                (click)="editarDatosFinancierosId(c.IdNumeroCuenta)">
+                                                <i class="fas fa-pencil-alt"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <br>
+        <br>
+
+        <!-- Modal para ingresar la direccion del socio -->
+        <div class="modal fade" id="modal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog  modal-xl modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Agregar datos de direcciones del socio</h5>
+                        <button type="button" class="btn-close" #closeBUtton data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form #datosSocioForm="ngForm" (ngSubmit)="agregarDireccionSocio()">
+                            <div class="row">
+                                <div class="row">
+                                    <!-- Direccion -->
+                                    <div class="col-sm-7">
+                                        <h5>Dirección del socio<strong style="color: red; font-size: 15px;">*</strong>
+                                        </h5>
+                                        <div class="form-group">
+                                            <input id="Direccion" name="Direccion" #Direccion="ngModel" type="text"
+                                                class="form-control required"
+                                                placeholder="Ingrese la dirección del socio"
+                                                [(ngModel)]="datosDireccionSocio.Direccion">
+                                        </div>
+                                    </div>
+                                    <!-- ComboBox Departamento -->
+                                    <div class="col-sm-4">
+                                        <h5>Departamento<strong style="color: red; font-size: 15px;">*</strong></h5>
+                                        <div class="ng-autocomplete2">
+                                            <ng-autocomplete #autoDepartamento placeHolder="Seleccione el departamento"
+                                                [data]="comboDepartament" (selected)='getComboMunicipio($event)'
+                                                [searchKeyword]="keyword" [itemTemplate]="itemTemplate1"
+                                                [notFoundTemplate]="notFoundTemplate1">
+                                            </ng-autocomplete>
+
+                                            <ng-template #itemTemplate1 let-item>
+                                                <a [innerHTML]="item.Descripcion"></a>
+                                            </ng-template>
+
+                                            <ng-template #notFoundTemplate1 let-notFound>
+                                                <div [innerHTML]="notFound"></div>
+                                            </ng-template>
+                                        </div>
+                                    </div>
+                                    <!-- ComboBox Municipio -->
+                                    <div class="col-sm-4">
+                                        <h5>Municipio<strong style="color: red; font-size: 15px;">*</strong></h5>
+                                        <div class="ng-autocomplete2">
+                                            <ng-autocomplete #autoMunicipio placeHolder="Seleccione el Municipio"
+                                                [data]="comboMunicipio" (selected)='getComboZona($event)'
+                                                [searchKeyword]="keyword2" [itemTemplate]="itemTemplate2"
+                                                [notFoundTemplate]="notFoundTemplate2">
+                                            </ng-autocomplete>
+
+                                            <ng-template #itemTemplate2 let-item>
+                                                <a [innerHTML]="item.Descripcion"></a>
+                                            </ng-template>
+
+                                            <ng-template #notFoundTemplate2 let-notFound>
+                                                <div [innerHTML]="notFound"></div>
+                                            </ng-template>
+                                        </div>
+                                    </div>
+                                    <!-- ComboBox Zona -->
+                                    <div class="col-sm-4">
+                                        <h5>Zona</h5>
+                                        <div class="ng-autocomplete2">
+                                            <ng-autocomplete #autoZona placeHolder="Seleccione la zona"
+                                                [data]="comboZona" (selected)='getComboColonia($event)'
+                                                [searchKeyword]="keyword3" [itemTemplate]="itemTemplate3"
+                                                [notFoundTemplate]="notFoundTemplate3">
+                                            </ng-autocomplete>
+
+                                            <ng-template #itemTemplate3 let-item>
+                                                <a [innerHTML]="item.Descripcion"></a>
+                                            </ng-template>
+
+                                            <ng-template #notFoundTemplate3 let-notFound>
+                                                <div [innerHTML]="notFound"></div>
+                                            </ng-template>
+                                        </div>
+                                    </div>
+                                    <!-- Combo Colonia -->
+                                    <div class="col-sm-4">
+                                        <h5>Colonia</h5>
+                                        <div class="ng-autocomplete2">
+                                            <ng-autocomplete #autoColonia placeHolder="Seleccione la colonia"
+                                                [data]="comboColonia" [searchKeyword]="keyword4"
+                                                (selected)='getIdColonia($event)' [itemTemplate]="itemTemplate4"
+                                                [notFoundTemplate]="notFoundTemplate4">
+                                            </ng-autocomplete>
+
+                                            <ng-template #itemTemplate4 let-item>
+                                                <a [innerHTML]="item.Descripcion"></a>
+                                            </ng-template>
+
+                                            <ng-template #notFoundTemplate4 let-notFound>
+                                                <div [innerHTML]="notFound"></div>
+                                            </ng-template>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12">
+                                        <h5>Referencia direccion</h5>
+                                        <div class="form-group">
+                                            <textarea class="form-control" id="ReferenciaDireccion"
+                                                name="ReferenciaDireccion" #ReferenciaDireccion="ngModel"
+                                                [(ngModel)]="datosDireccionSocio.ReferenciaDireccion"
+                                                placeholder="Ingrese la especificacion" cols="30" rows="2"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button
+                                style="margin-left: 70%; margin-top: 15px; background-color: #ed8524; border-color: #ed8524;"
+                                type="submit" class="btn btn-primary">Guardar cambios</button>
+                        </form>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                            style="background-color: #343a40; border-color: #343a40;">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para ingresar los contactos del socio -->
+        <div class="modal fade" id="modal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog  modal-xl modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Agregar datos de los contacto del socio</h5>
+                        <button type="button" class="btn-close" #closeBUtton data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form #datosSocioForm="ngForm" (ngSubmit)="agregarDatosContacto()">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="ibox ">
+
+                                        <div class="ibox-content">
+                                            <!-- Opciones de seleccion para agregar los contactos -->
+                                            <div class="row">
+                                                <div class="col-sm-2">
+                                                    <div class="form-check abc-radio abc-radio-info form-check-inline">
+                                                        <input class="form-check-input" type="radio" id="inlineRadio1"
+                                                            name="radioInline"
+                                                            (change)="obtenerOpcionDatosContacto($event)" [value]="1">
+                                                        <label class="form-check-label" for="inlineRadio1"> Nuevo
+                                                            Colaborador </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <div class="form-check abc-radio abc-radio-info form-check-inline">
+                                                        <input class="form-check-input" type="radio" id="inlineRadio2"
+                                                            name="radioInline"
+                                                            (change)="obtenerOpcionDatosContacto($event)" [value]="2">
+                                                        <label class="form-check-label" for="inlineRadio2"> Agregar
+                                                            telefono a colaborador </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <div class="form-check abc-radio abc-radio-info form-check-inline">
+                                                        <input class="form-check-input" type="radio" id="inlineRadio3"
+                                                            name="radioInline"
+                                                            (change)="obtenerOpcionDatosContacto($event)" [value]="3">
+                                                        <label class="form-check-label" for="inlineRadio3"> Agregar
+                                                            correo a colaborador </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <br>
+                                            <div class="row" *ngIf="opcionDatosContacto == 1">
+                                                <div class="col-sm-4">
+                                                    <h5>Nombre del contacto<strong
+                                                            style="color: red; font-size: 15px;">*</strong></h5>
+                                                    <input type="text" name="Nombre" #Nombre="ngModel"
+                                                        placeholder="Ingrese el nombre del contacto"
+                                                        class="form-control" [(ngModel)]="datosContactoSocio.Nombre"
+                                                        id="Nombre">
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <h5>Puesto del contacto<strong
+                                                            style="color: red; font-size: 15px;">*</strong></h5>
+                                                    <input type="text" name="Puesto" #Puesto="ngModel"
+                                                        placeholder="Ingrese el puesto del contacto"
+                                                        class="form-control" [(ngModel)]="datosContactoSocio.Puesto"
+                                                        id="Puesto">
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row" *ngIf="opcionDatosContacto == 2">
+                                                <div class="col-lg-12">
+                                                    <div class="ibox ">
+                                                        <div class="ibox-content">
+                                                            <div class="row">
+                                                                <div class="col-sm-4">
+                                                                    <h5>Colaborador<strong
+                                                                            style="color: red; font-size: 15px;">*</strong>
+                                                                    </h5>
+                                                                    <div class="ng-autocomplete2">
+                                                                        <ng-autocomplete
+                                                                            placeHolder="Seleccione el colaborador"
+                                                                            [data]="obtenerContactoSocio"
+                                                                            (selected)='getIdContacto($event)'
+                                                                            [searchKeyword]="keyword6"
+                                                                            [itemTemplate]="itemTemplate16"
+                                                                            [notFoundTemplate]="notFoundTemplate16">
+                                                                        </ng-autocomplete>
+
+                                                                        <ng-template #itemTemplate16 let-item>
+                                                                            <a [innerHTML]="item.Nombre"></a>
+                                                                        </ng-template>
+
+                                                                        <ng-template #notFoundTemplate16 let-notFound>
+                                                                            <div [innerHTML]="notFound"></div>
+                                                                        </ng-template>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-sm-3">
+                                                                    <h5>Telefono del contacto<strong
+                                                                            style="color: red; font-size: 15px;">*</strong>
+                                                                    </h5>
+                                                                    <input type="tel" name="Telefono" maxlength="8"
+                                                                        #Telefono="ngModel"
+                                                                        placeholder="Ingrese el numero telefonico"
+                                                                        class="form-control"
+                                                                        [(ngModel)]="datosTelefono.Telefono"
+                                                                        id="Telefono">
+                                                                </div>
+
+                                                                <div class="col-sm-4">
+                                                                    <h5>Tipo de telefono<strong
+                                                                            style="color: red; font-size: 15px;">*</strong>
+                                                                    </h5>
+                                                                    <div class="ng-autocomplete2">
+                                                                        <ng-autocomplete
+                                                                            placeHolder="Seleccione el tipo de telefono"
+                                                                            [data]="obtenertTipoTelefono"
+                                                                            (selected)='getIdTipoTelefono($event)'
+                                                                            [searchKeyword]="keyword"
+                                                                            [itemTemplate]="itemTemplate17"
+                                                                            [notFoundTemplate]="notFoundTemplate17">
+                                                                        </ng-autocomplete>
+
+                                                                        <ng-template #itemTemplate17 let-item>
+                                                                            <a [innerHTML]="item.Descripcion"></a>
+                                                                        </ng-template>
+
+                                                                        <ng-template #notFoundTemplate17 let-notFound>
+                                                                            <div [innerHTML]="notFound"></div>
+                                                                        </ng-template>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row" *ngIf="opcionDatosContacto == 3">
+                                                <div class="col-lg-12">
+                                                    <div class="ibox ">
+
+                                                        <div class="ibox-content">
+                                                            <div class="row">
+                                                                <div class="col-sm-3">
+                                                                    <h5>Colaborador<strong
+                                                                            style="color: red; font-size: 15px;">*</strong>
+                                                                    </h5>
+                                                                    <div class="ng-autocomplete2">
+                                                                        <ng-autocomplete
+                                                                            placeHolder="Seleccione el colaborador"
+                                                                            [data]="obtenerContactoSocio"
+                                                                            (selected)='getIdContacto($event)'
+                                                                            [searchKeyword]="keyword6"
+                                                                            [itemTemplate]="itemTemplate16"
+                                                                            [notFoundTemplate]="notFoundTemplate16">
+                                                                        </ng-autocomplete>
+
+                                                                        <ng-template #itemTemplate16 let-item>
+                                                                            <a [innerHTML]="item.Nombre"></a>
+                                                                        </ng-template>
+
+                                                                        <ng-template #notFoundTemplate16 let-notFound>
+                                                                            <div [innerHTML]="notFound"></div>
+                                                                        </ng-template>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-sm-3">
+                                                                    <h5>Correo del contacto<strong
+                                                                            style="color: red; font-size: 15px;">*</strong>
+                                                                    </h5>
+                                                                    <input type="email" name="Email" #Email="ngModel"
+                                                                        placeholder="Ingrese el correo"
+                                                                        class="form-control"
+                                                                        [(ngModel)]="datosCorreo.Email" id="Email">
+                                                                </div>
+
+                                                                <div class="col-sm-3">
+                                                                    <h5>Tipo de correo<strong
+                                                                            style="color: red; font-size: 15px;">*</strong>
+                                                                    </h5>
+                                                                    <div class="ng-autocomplete2">
+                                                                        <ng-autocomplete
+                                                                            placeHolder="Seleccione el tipo de correo"
+                                                                            [data]="obtenertTipoCorreo"
+                                                                            (selected)='getIdTipoCorreo($event)'
+                                                                            [searchKeyword]="keyword"
+                                                                            [itemTemplate]="itemTemplate18"
+                                                                            [notFoundTemplate]="notFoundTemplate18">
+                                                                        </ng-autocomplete>
+
+                                                                        <ng-template #itemTemplate18 let-item>
+                                                                            <a [innerHTML]="item.Descripcion"></a>
+                                                                        </ng-template>
+
+                                                                        <ng-template #notFoundTemplate18 let-notFound>
+                                                                            <div [innerHTML]="notFound"></div>
+                                                                        </ng-template>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary"
+                                style="margin-left: 70%; margin-top: 15px; background-color: #ed8524; border-color: #ed8524;">Guardar
+                                cambios</button>
+                        </form>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                            style="background-color: #343a40; border-color: #343a40;">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para ingresar los datos financieros del socio -->
+        <div class="modal fade" id="modal5" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog  modal-xl modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Agregar datos financieros del socio</h5>
+                        <button type="button" class="btn-close" #closeBUtton data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form #datosSocioForm="ngForm" (ngSubmit)="agregarDatosFinancieros()">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="ibox ">
+                                        <div class="ibox-content">
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <h5>Banco</h5>
+                                                    <div class="ng-autocomplete2">
+                                                        <ng-autocomplete placeHolder="Seleccione el banco"
+                                                            [data]="comboBanco" [searchKeyword]="keyword7"
+                                                            [itemTemplate]="itemTemplate5"
+                                                            (selected)='getIdBanco($event)'
+                                                            [notFoundTemplate]="notFoundTemplate5">
+                                                        </ng-autocomplete>
+
+                                                        <ng-template #itemTemplate5 let-item>
+                                                            <a [innerHTML]="item.Descripcion"></a>
+                                                        </ng-template>
+
+                                                        <ng-template #notFoundTemplate5 let-notFound>
+                                                            <div [innerHTML]="notFound"></div>
+                                                        </ng-template>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-4">
+                                                    <h5>Tipo cuenta bancaria</h5>
+                                                    <div class="ng-autocomplete2">
+                                                        <ng-autocomplete
+                                                            placeHolder="Seleccione el tipo de cuenta bancaria"
+                                                            [data]="comboTipoCuenta" [searchKeyword]="keyword7"
+                                                            (selected)='getIdTipoCuenta($event)'
+                                                            [itemTemplate]="itemTemplate6"
+                                                            [notFoundTemplate]="notFoundTemplate6">
+                                                        </ng-autocomplete>
+
+                                                        <ng-template #itemTemplate6 let-item>
+                                                            <a [innerHTML]="item.Descripcion"></a>
+                                                        </ng-template>
+
+                                                        <ng-template #notFoundTemplate6 let-notFound>
+                                                            <div [innerHTML]="notFound"></div>
+                                                        </ng-template>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-4">
+                                                    <h5>Numero de cuenta bancaria</h5>
+                                                    <input type="text" name="NumeroCuenta" #NumeroCuenta="ngModel"
+                                                        placeholder="Numero de cuenta bancaria" class="form-control"
+                                                        [(ngModel)]="datosFinancieros.NumeroCuenta" id="NumeroCuenta">
+                                                </div>
+                                                <div class="col-sm-4">
+                                                    <h5>Nombre de la cuenta</h5>
+                                                    <input type="text" name="NombreCuenta" #NombreCuenta="ngModel"
+                                                        placeholder="Ingrese el nombre de la cuenta"
+                                                        class="form-control" [(ngModel)]="datosFinancieros.NombreCuenta"
+                                                        id="NombreCuenta">
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary"
+                                style="margin-left: 70%; margin-top: 15px; background-color: #ed8524; border-color: #ed8524;">Guardar
+                                cambios</button>
+                        </form>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                            style="background-color: #343a40; border-color: #343a40;">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br>
+        <br>
+
+
+
+
+    </div>
+
+
+
+    <!-- Pie de página -->
+
+    <!-- <div class="footer" style="text-align: center;">
+        <div>
+            Serbaco &copy; 2020
+        </div>
+    </div> -->
+</body>
+<!-- <footer style="text-align: center;">
+    <div>
+        Serbaco &copy; 2020
+    </div>
+</footer> -->

@@ -1,0 +1,119 @@
+
+    // font-family: 'Roboto Slab', serif;
+    
+    // background-image:  url('/assets/carousel/vector.png');
+    // background-repeat: no-repeat;
+    // background-position: right top;
+    // background-size: 100%;
+    // width: 100%;
+
+
+.divPartner{
+    margin-left: 100px; 
+    margin-right: 50px; 
+    margin-bottom: 50px;
+}
+.navStyle{
+    border-radius: 10px; 
+    background-color: #e85327;
+}
+
+.collapse{
+    background-color:  #e85327;
+}
+
+.fontStyle{
+   
+    font-size: 17px; 
+    // font-weight:bold;
+}
+
+.dropdown-submenu {
+    position: relative;
+    color: white;
+  }
+
+  .dropdown-submenu:hover {
+    background-color: black;
+  }
+
+  .dropdown-menu:hover {
+    background-color: black;
+  }
+.dropdown-item{
+  color: white;
+}
+  
+.dropdown-submenu a::after {
+      transform: rotate(-90deg);
+      position: absolute;
+      right: 6px;
+      top: .8em;
+}
+.dropdown-submenu .dropdown-menu {
+        top: 0;
+      left: 100%;
+      margin-left: .1rem;
+      margin-right: .1rem;
+}
+
+
+.boton {
+    background-color:  #343a40;
+    color: white;
+}
+
+.tablaPedido{
+    margin-top: 30px;
+    text-align: center;   
+    overflow: scroll;
+}
+
+.fas{
+    color: white;
+}
+
+.btn-info{
+    background-color: #23c6c8;
+    border-color: #23c6c8;
+}
+
+.btn-primary{
+    background-color: #1ab394;
+    border-color: #1ab394;
+}
+
+.btn-warning{
+    background-color:  #f8af60;
+    border-color: #f8af60;
+}
+
+
+.tableColumns {
+  table-layout: fixed; 
+  width: 100%;
+  *margin-left: -100px;/*ie7*/
+}
+.td, .th {
+  vertical-align: top;
+  border-top: 1px solid #ccc;
+  padding:10px;
+  width:100px;
+}
+.th {
+  position:absolute;
+  *position: relative; /*ie7*/
+  left:0; 
+  width:100px;
+}
+.outer {position:relative}
+.inner {
+  overflow-x:scroll;
+  overflow-y:visible;
+  width:400px; 
+  margin-left:100px;
+}
+
+
+
+

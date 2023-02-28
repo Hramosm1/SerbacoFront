@@ -1,0 +1,1434 @@
+<body>
+  <div class="row divPartner">
+
+    <nav class="navbar navbar-expand-lg navbar-light  navStyle fontStyle" style="color: white;">
+      <button class="navbar-toggler" type="button" (click)="Collapse()" data-toggle="collapse"
+        data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false"
+        aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div [ngClass]="{'collapse':isCollapse}" class=" navbar-collapse" id="navbarTogglerDemo01">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+          <li class="nav-item active">
+            <select class="form-control mr-sm-2" [(ngModel)]="opcionSeleccionado" (change)="obtenerNumeroPaginacion()">
+              <option hidden>elements</option>
+              <option *ngFor="let c of data">{{c.number}}</option>
+            </select>
+          </li>
+
+          <li class=" dropdown">
+            <a class="nav-link  dropdown-toggle" (click)="DropDown()" id="navbarDropdownMenuLink" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false" style="color: white;">
+              Filtros
+            </a>
+            <ul [ngClass]="{'dropdown-menu dropdown':isDropdown}" aria-labelledby="navbarDropdownMenuLink">
+              <!-- Filtro por fecha y rango de fecha -->
+              <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle"
+                  (click)="DropdownSubMenuFechaPedido()">Fecha pedido</a>
+                <ul class="dropdown-menu" [ngClass]="{'dropdown-menu':isDropdownSubMenuFechaPedido}">
+                  <li>
+                    <a class="dropdown-item">Fecha inicio</a>
+                    <input type="date" [(ngModel)]="buscadorFecha" id="FechaHoraEntregaInicio" class="form-control"
+                      (change)="obtenerFecha($event)">
+                    <a class="dropdown-item">Fecha fin</a>
+                    <input type="date" [(ngModel)]="fechaFin" id="FechaHoraEntregaFin" class="form-control"
+                      (change)="obtenerFechaFin($event)">
+                  </li>
+                </ul>
+              </li>
+              <!-- Filtro por estado -->
+              <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle"
+                  (click)="DropdownSubMenuEstadoPedido()">Estado pedido</a>
+                <ul class="dropdown-menu" [ngClass]="{'dropdown-menu':isDropdownSubMenuEstadoPedido}">
+                  <li>
+                    <a class="dropdown-item">Estado</a>
+                    <div class="ng-autocomplete2" style="width: 200px;">
+                      <ng-autocomplete placeHolder="Seleccione el estado" [data]="listadoEstado"
+                        (selected)='obtenerFiltroEstado($event)' [searchKeyword]="keyword"
+                        [itemTemplate]="itemTemplate23" [notFoundTemplate]="notFoundTemplate23">
+                      </ng-autocomplete>
+
+                      <ng-template #itemTemplate23 let-item>
+                        <a [innerHTML]="item.Descripcion"></a>
+                      </ng-template>
+
+                      <ng-template #notFoundTemplate23 let-notFound>
+                        <div [innerHTML]="notFound"></div>
+                      </ng-template>
+                    </div>
+
+                  </li>
+                </ul>
+              </li>
+              <!-- Filtro por domiciliar -->
+              <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle"
+                  (click)="DropdownSubMenuDomiciliarPedido()">Domiciliar</a>
+                <ul class="dropdown-menu" [ngClass]="{'dropdown-menu':isDropdownSubMenuDomiciliarPedido}">
+                  <li>
+                    <a class="dropdown-item">Domiciliar que recibe</a>
+                    <div class="ng-autocomplete2">
+                      <ng-autocomplete placeHolder="Seleccione al domiciliar que recibe" [data]="ListaDomiciliar3"
+                        (selected)='obtenerDomiciliarFiltroRecepcionR($event)' [searchKeyword]="keyword20"
+                        [itemTemplate]="itemTemplate102" [notFoundTemplate]="notFoundTemplate102">
+                      </ng-autocomplete>
+
+                      <ng-template #itemTemplate102 let-item>
+                        <a [innerHTML]="item.Domiciliar"></a>
+                      </ng-template>
+
+                      <ng-template #notFoundTemplate102 let-notFound>
+                        <div [innerHTML]="notFound"></div>
+                      </ng-template>
+                    </div>
+                    <a class="dropdown-item">Domiciliar de entrega</a>
+                    <div class="ng-autocomplete2">
+                      <ng-autocomplete placeHolder="Seleccione al domiciliar que entrega el pedido"
+                        [data]="ListaDomiciliar4" (selected)='obtenerDomiciliarFiltroEntregaR($event)'
+                        [searchKeyword]="keyword21" [itemTemplate]="itemTemplate103"
+                        [notFoundTemplate]="notFoundTemplate103">
+                      </ng-autocomplete>
+
+                      <ng-template #itemTemplate103 let-item>
+                        <a [innerHTML]="item.Domiciliar"></a>
+                      </ng-template>
+
+                      <ng-template #notFoundTemplate103 let-notFound>
+                        <div [innerHTML]="notFound"></div>
+                      </ng-template>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+              <!-- Filtro por socio -->
+              <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle"
+                  (click)="DropdownSubMenuSocioPedido()">Socio</a>
+                <ul class="dropdown-menu" [ngClass]="{'dropdown-menu':isDropdownSubMenuSocioPedido}">
+                  <li>
+                    <a class="dropdown-item">Seleccion socio</a>
+                    <div class="ng-autocomplete2">
+                      <ng-autocomplete placeHolder="Seleccione al socio" [data]="comboSocio" [searchKeyword]="keyword10"
+                        [itemTemplate]="itemTemplate1" (selected)='getIdCliente($event)'
+                        [notFoundTemplate]="notFoundTemplate1">
+                      </ng-autocomplete>
+
+                      <ng-template #itemTemplate1 let-item>
+                        <a [innerHTML]="item.Socio"></a>
+                      </ng-template>
+
+                      <ng-template #notFoundTemplate1 let-notFound>
+                        <div [innerHTML]="notFound"></div>
+                      </ng-template>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+
+            </ul>
+          </li>
+        </ul>
+
+        <form class="form-inline my-2 my-lg-0">
+          <table>
+            <td>
+              <input class="form-control mr-sm-2"
+              name="IdPedidoBuscado" [(ngModel)]="IdPedidoBuscado" 
+              type="text" placeholder="No. Pedido"  aria-label="Search">
+            </td>
+            <td>
+              <button *ngIf="IdPedidoBuscado != null" class="btn" style="background-color: #343a40; color: white; margin-left: 10px;" type="submit"
+                (click)="obtenerIdPedido()">Buscar</button>
+            </td>
+          </table>
+
+
+        </form>
+
+        <a class="nav-link " (click)="limpiarFiltro()" data-toggle="dropdown" style="color: white; text-align: center;">
+          Limpiar filtros <i class="fas fa-trash-alt"></i>
+        </a>
+
+      </div>
+    </nav>
+
+
+
+
+    <!-- Listado de pedidos -->
+    <div class="row" *ngIf="filtroFecha == 0">
+      <button style="width: 200px; margin-top: 20px; background-color: white; border-color: #e85327; border-radius: 5px; color: #e85327; font-weight: bold; font-size: 17px;
+      margin-right: 50px;" type="button" class="btn btn-primary" (click)="descargarExcel()">
+        DESCARGAR EXCEL <i class="fas fa-file-excel" style="color: #e85327;"></i>
+      </button>
+
+      <div class=" table-responsive" style="margin-left: -12px; ">
+        <table class="table  table-hover  tablaPedido" id="dtBasicExample" >
+          <thead class="thead-dark align-middle" style="background-color: black; color: white;">
+            <tr>
+              <th style="text-align: center;">CORRELATIVO</th>
+              <th style="text-align: center;">SOCIO</th>
+              <th style="text-align: center;">SOLICITUD DE COBRO</th>
+              <th style="text-align: center;">MONTO DE COBRO</th>
+              <th style="text-align: center;">TIPO DE PEDIDO</th>
+              <th style="text-align: center;">MUNICIPIO DE RECEPCIÓN</th>
+              <th style="text-align: center;">MUNICIPIO DE ENTREGA</th>
+              <th style="text-align: center;">ESTADO</th>
+              <th style="text-align: center;">DOMICILIAR DE RECEPCIÓN</th>
+              <th style="text-align: center;">DOMICILIAR DE ENTREGA</th>
+              <th style="text-align: center;" *ngIf="rolSocio == 0">HISTORIAL DE ESTADO</th>
+              <th style="text-align: center;" *ngIf="rolSocio == 0">DESCARGAR PDF</th>
+              <th style="text-align: center;" *ngIf="rolSocio == 0">EDITAR</th>
+              <th style="text-align: center;" *ngIf="rolSocio == 0">ASIGNACIÓN DOMICILIAR</th>
+              <!-- <th style="text-align: center;" *ngIf="rolSocio == 1">Estado del pedido</th> -->
+            </tr>
+          </thead>
+          <tbody
+            *ngFor="let c of obtenerListadoPedidos | paginate: {itemsPerPage: numeroItems, currentPage: pageActual}">
+            <tr>
+              <td style="text-align: center;">{{c.FechaHoraEntregaC}}/{{c.IdPedido}}</td>
+              <td style="text-align: center;">{{c.Socio}}</td>
+              <td style="text-align: center;">{{c.SolicitudCobro}}</td>
+              <td style="text-align: right;">{{c.Moneda}}.{{c.MontoCobro}}</td>
+              <td style="text-align: center;">{{c.TipoPedido}}</td>
+              <td style="text-align: center;">{{c.MunicipioRecepcion}}</td>
+              <td style="text-align: center;">{{c.MunicipioEntrega}}</td>
+              <td style="text-align: center;">{{c.Estado}}</td>
+              <td style="text-align: center;">{{c.DomiliciarRecepcion}}</td>
+              <td style="text-align: center;">{{c.DomiliciarEntrega}}</td>
+              <td style="text-align: center;" *ngIf="rolSocio == 0" class="center">
+                <button (click)="historiaPedidos(c.IdPedido)" type="button" data-bs-target="#modal4"
+                  data-bs-toggle="modal" class="btn btn-info"> <i class="fas fa-file-alt"></i></button>
+              </td>
+              <td style="text-align: center;" *ngIf="rolSocio == 0" class="center">
+                <button type="button" class="btn btn-primary" data-target="#modal1" (click)="dowlandPDF(c.IdPedido)">
+                  <i class="fas fa-download"></i>
+                </button>
+              </td>
+              <td style="text-align: center;" *ngIf="rolSocio == 0" class="center">
+                <button type="button" class="btn btn-secondary" (click)="editarPedidos(c.IdPedido)"
+                  data-bs-target="#modal2" data-bs-toggle="modal">
+                  <i class="fas fa-pencil-alt"></i>
+                </button>
+              </td>
+              <td style="text-align: center;" *ngIf="rolSocio == 0" class="center">
+                <button type="button" class="btn btn-warning" data-bs-target="#modal10" data-bs-toggle="modal"
+                  (click)="asignacionDomiciliar(c.IdPedido)">
+                  <i class="fas fa-motorcycle"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <pagination-controls (pageChange)="pageActual = $event" responsive="true" previousLabel="Antes"
+          nextLabel="Siguiente"></pagination-controls>
+      </div>
+
+
+    </div>
+    <div class="row" *ngIf="filtroFecha == 1">
+      <button style="width: 200px; margin-top: 20px; background-color: white; border-color: #e85327; border-radius: 5px; color: #e85327; font-weight: bold; font-size: 17px;
+      margin-right: 50px;" type="button" class="btn btn-primary" (click)="descargarExcel()">
+        DESCARGAR EXCEL <i class="fas fa-file-excel" style="color: #e85327;"></i>
+      </button>
+
+      <div class=" table-responsive" style="margin-left: -12px;">
+        <table class="table table-sm table-hover  tablaPedido" id="dtBasicExample">
+          <thead class="thead-dark align-middle" style="background-color: black; color: white">
+            <tr>
+              <th style="text-align: center;">CORRELATIVO</th>
+              <th style="text-align: center;">SOCIO</th>
+              <th style="text-align: center;">SOLICITUD DE COBRO</th>
+              <th style="text-align: center;">MONTO DE COBRO</th>
+              <th style="text-align: center;">TIPO DE PEDIDO</th>
+              <th style="text-align: center;">MUNICIPIO DE RECEPCIÓN</th>
+              <th style="text-align: center;">MUNICIPIO DE ENTREGA</th>
+              <th style="text-align: center;">ESTADO</th>
+              <th style="text-align: center;">DOMICILIAR DE RECEPCIÓN</th>
+              <th style="text-align: center;">DOMICILIAR DE ENTREGA</th>
+              <th style="text-align: center;" *ngIf="rolSocio == 0">HISTORIAL DE ESTADO</th>
+              <th style="text-align: center;" *ngIf="rolSocio == 0">DESCARGAR PDF</th>
+              <th style="text-align: center;" *ngIf="rolSocio == 0">EDITAR</th>
+              <th style="text-align: center;" *ngIf="rolSocio == 0">ASIGNACIÓN DOMICILIAR</th>
+              <!-- <th style="text-align: center;" *ngIf="rolSocio == 1">Estado del pedido</th> -->
+            </tr>
+          </thead>
+          <tbody
+            *ngFor="let c of obtenerListadoPedidoFecha | paginate: {itemsPerPage: numeroItems, currentPage: pageActual}">
+            <tr>
+              <td style="text-align: center;">{{c.FechaHoraEntregaC}}/{{c.IdPedido}}</td>
+              <td style="text-align: center;">{{c.Socio}}</td>
+              <td style="text-align: center;">{{c.SolicitudCobro}}</td>
+              <td style="text-align: right;">{{c.Moneda}}.{{c.MontoCobro}}</td>
+              <td style="text-align: center;">{{c.TipoPedido}}</td>
+              <td style="text-align: center;">{{c.MunicipioRecepcion}}</td>
+              <td style="text-align: center;">{{c.MunicipioEntrega}}</td>
+              <td style="text-align: center;">{{c.Estado}}</td>
+              <td style="text-align: center;">{{c.DomiliciarRecepcion}}</td>
+              <td style="text-align: center;">{{c.DomiliciarEntrega}}</td>
+              <td style="text-align: center;" *ngIf="rolSocio == 0" class="center">
+                <button (click)="historiaPedidos(c.IdPedido)" type="button" data-bs-target="#modal4"
+                  data-bs-toggle="modal" class="btn btn-info"> <i class="fas fa-file-alt"></i></button>
+              </td>
+              <td style="text-align: center;" *ngIf="rolSocio == 0" class="center">
+                <button type="button" class="btn btn-primary" data-target="#modal1" (click)="dowlandPDF(c.IdPedido)">
+                  <i class="fas fa-download"></i>
+                </button>
+              </td>
+              <td style="text-align: center;" *ngIf="rolSocio == 0" class="center">
+                <button type="button" class="btn btn-secondary" (click)="editarPedidos(c.IdPedido)"
+                  data-bs-target="#modal2" data-bs-toggle="modal">
+                  <i class="fas fa-pencil-alt"></i>
+                </button>
+              </td>
+              <td style="text-align: center;" *ngIf="rolSocio == 0" class="center">
+                <button type="button" class="btn btn-warning" data-bs-target="#modal10" data-bs-toggle="modal"
+                  (click)="asignacionDomiciliar(c.IdPedido)">
+                  <i class="fas fa-motorcycle"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <pagination-controls (pageChange)="pageActual = $event" responsive="true" previousLabel="Antes"
+          nextLabel="Siguiente"></pagination-controls>
+      </div>
+
+
+    </div>
+    <div class="row" *ngIf="filtroFecha == 2">
+      <button style="width: 200px; margin-top: 20px; background-color: white; border-color: #e85327; border-radius: 5px; color: #e85327; font-weight: bold; font-size: 17px;
+      margin-right: 50px;" type="button" class="btn btn-primary" (click)="descargarExcel()">
+        DESCARGAR EXCEL <i class="fas fa-file-excel" style="color: #e85327;"></i>
+      </button>
+
+      <div class=" table-responsive" style="margin-left: -12px;">
+        <table class="table table-sm table-hover  tablaPedido" id="dtBasicExample">
+          <thead class="thead-dark align-middle" style="background-color: black; color: white">
+            <tr>
+              <th style="text-align: center;">CORRELATIVO</th>
+              <th style="text-align: center;">SOCIO</th>
+              <th style="text-align: center;">SOLICITUD DE COBRO</th>
+              <th style="text-align: center;">MONTO DE COBRO</th>
+              <th style="text-align: center;">TIPO DE PEDIDO</th>
+              <th style="text-align: center;">MUNICIPIO DE RECEPCIÓN</th>
+              <th style="text-align: center;">MUNICIPIO DE ENTREGA</th>
+              <th style="text-align: center;">ESTADO</th>
+              <th style="text-align: center;">DOMICILIAR DE RECEPCIÓN</th>
+              <th style="text-align: center;">DOMICILIAR DE ENTREGA</th>
+              <th style="text-align: center;" *ngIf="rolSocio == 0">HISTORIAL DE ESTADO</th>
+              <th style="text-align: center;" *ngIf="rolSocio == 0">DESCARGAR PDF</th>
+              <th style="text-align: center;" *ngIf="rolSocio == 0">EDITAR</th>
+              <th style="text-align: center;" *ngIf="rolSocio == 0">ASIGNACIÓN DOMICILIAR</th>
+              <!-- <th style="text-align: center;" *ngIf="rolSocio == 1">Estado del pedido</th> -->
+            </tr>
+          </thead>
+          <tbody *ngFor="let c of filtroRangoFecha | paginate: {itemsPerPage: numeroItems, currentPage: pageActual}">
+            <tr>
+              <td style="text-align: center;">{{c.FechaHoraEntregaC}}/{{c.IdPedido}}</td>
+              <td style="text-align: center;">{{c.Socio}}</td>
+              <td style="text-align: center;">{{c.SolicitudCobro}}</td>
+              <td style="text-align: right;">{{c.Moneda}}.{{c.MontoCobro}}</td>
+              <td style="text-align: center;">{{c.TipoPedido}}</td>
+              <td style="text-align: center;">{{c.MunicipioRecepcion}}</td>
+              <td style="text-align: center;">{{c.MunicipioEntrega}}</td>
+              <td style="text-align: center;">{{c.Estado}}</td>
+              <td style="text-align: center;">{{c.DomiliciarRecepcion}}</td>
+              <td style="text-align: center;">{{c.DomiliciarEntrega}}</td>
+              <td style="text-align: center;" *ngIf="rolSocio == 0" class="center">
+                <button (click)="historiaPedidos(c.IdPedido)" type="button" data-bs-target="#modal4"
+                  data-bs-toggle="modal" class="btn btn-info"> <i class="fas fa-file-alt"></i></button>
+              </td>
+              <td style="text-align: center;" *ngIf="rolSocio == 0" class="center">
+                <button type="button" class="btn btn-primary" data-target="#modal1" (click)="dowlandPDF(c.IdPedido)">
+                  <i class="fas fa-download"></i>
+                </button>
+              </td>
+              <td style="text-align: center;" *ngIf="rolSocio == 0" class="center">
+                <button type="button" class="btn btn-secondary" (click)="editarPedidos(c.IdPedido)"
+                  data-bs-target="#modal2" data-bs-toggle="modal">
+                  <i class="fas fa-pencil-alt"></i>
+                </button>
+              </td>
+              <td style="text-align: center;" *ngIf="rolSocio == 0" class="center">
+                <button type="button" class="btn btn-warning" data-bs-target="#modal10" data-bs-toggle="modal"
+                  (click)="asignacionDomiciliar(c.IdPedido)">
+                  <i class="fas fa-motorcycle"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <pagination-controls (pageChange)="pageActual = $event" responsive="true" previousLabel="Antes"
+          nextLabel="Siguiente"></pagination-controls>
+      </div>
+
+
+    </div>
+    <div class="row" *ngIf="filtroFecha == 3">
+      <button style="width: 200px; margin-top: 20px; background-color: white; border-color: #e85327; border-radius: 5px; color: #e85327; font-weight: bold; font-size: 17px;
+      margin-right: 50px;" type="button" class="btn btn-primary" (click)="descargarExcel()">
+        DESCARGAR EXCEL <i class="fas fa-file-excel" style="color: #e85327;"></i>
+      </button>
+
+      <div class=" table-responsive" style="margin-left: -12px;">
+        <table class="table table-sm table-hover  tablaPedido" id="dtBasicExample">
+          <thead class="thead-dark align-middle" style="background-color: black; color: white">
+            <tr>
+              <th style="text-align: center;">CORRELATIVO</th>
+              <th style="text-align: center;">SOCIO</th>
+              <th style="text-align: center;">SOLICITUD DE COBRO</th>
+              <th style="text-align: center;">MONTO DE COBRO</th>
+              <th style="text-align: center;">TIPO DE PEDIDO</th>
+              <th style="text-align: center;">MUNICIPIO DE RECEPCIÓN</th>
+              <th style="text-align: center;">MUNICIPIO DE ENTREGA</th>
+              <th style="text-align: center;">ESTADO</th>
+              <th style="text-align: center;">DOMICILIAR DE RECEPCIÓN</th>
+              <th style="text-align: center;">DOMICILIAR DE ENTREGA</th>
+              <th style="text-align: center;" *ngIf="rolSocio == 0">HISTORIAL DE ESTADO</th>
+              <th style="text-align: center;" *ngIf="rolSocio == 0">DESCARGAR PDF</th>
+              <th style="text-align: center;" *ngIf="rolSocio == 0">EDITAR</th>
+              <th style="text-align: center;" *ngIf="rolSocio == 0">ASIGNACIÓN DOMICILIAR</th>
+              <!-- <th style="text-align: center;" *ngIf="rolSocio == 1">Estado del pedido</th> -->
+            </tr>
+          </thead>
+          <tbody *ngFor="let c of filtroEstado | paginate: {itemsPerPage: numeroItems, currentPage: pageActual}">
+            <tr>
+              <td style="text-align: center;">{{c.FechaHoraEntregaC}}/{{c.IdPedido}}</td>
+              <td style="text-align: center;">{{c.Socio}}</td>
+              <td style="text-align: center;">{{c.SolicitudCobro}}</td>
+              <td style="text-align: right;">{{c.Moneda}}.{{c.MontoCobro}}</td>
+              <td style="text-align: center;">{{c.TipoPedido}}</td>
+              <td style="text-align: center;">{{c.MunicipioRecepcion}}</td>
+              <td style="text-align: center;">{{c.MunicipioEntrega}}</td>
+              <td style="text-align: center;">{{c.Estado}}</td>
+              <td style="text-align: center;">{{c.DomiliciarRecepcion}}</td>
+              <td style="text-align: center;">{{c.DomiliciarEntrega}}</td>
+              <td style="text-align: center;" *ngIf="rolSocio == 0" class="center">
+                <button (click)="historiaPedidos(c.IdPedido)" type="button" data-bs-target="#modal4"
+                  data-bs-toggle="modal" class="btn btn-info"> <i class="fas fa-file-alt"></i></button>
+              </td>
+              <td style="text-align: center;" *ngIf="rolSocio == 0" class="center">
+                <button type="button" class="btn btn-primary" data-target="#modal1" (click)="dowlandPDF(c.IdPedido)">
+                  <i class="fas fa-download"></i>
+                </button>
+              </td>
+              <td style="text-align: center;" *ngIf="rolSocio == 0" class="center">
+                <button type="button" class="btn btn-secondary" (click)="editarPedidos(c.IdPedido)"
+                  data-bs-target="#modal2" data-bs-toggle="modal">
+                  <i class="fas fa-pencil-alt"></i>
+                </button>
+              </td>
+              <td style="text-align: center;" *ngIf="rolSocio == 0" class="center">
+                <button type="button" class="btn btn-warning" data-bs-target="#modal10" data-bs-toggle="modal"
+                  (click)="asignacionDomiciliar(c.IdPedido)">
+                  <i class="fas fa-motorcycle"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <pagination-controls (pageChange)="pageActual = $event" responsive="true" previousLabel="Antes"
+          nextLabel="Siguiente"></pagination-controls>
+      </div>
+
+
+    </div>
+    <div class="row" *ngIf="filtroFecha == 4">
+      <button style="width: 200px; margin-top: 20px; background-color: white; border-color: #e85327; border-radius: 5px; color: #e85327; font-weight: bold; font-size: 17px;
+      margin-right: 50px;" type="button" class="btn btn-primary" (click)="descargarExcel()">
+        DESCARGAR EXCEL <i class="fas fa-file-excel" style="color: #e85327;"></i>
+      </button>
+
+      <div class=" table-responsive" style="margin-left: -12px;">
+        <table class="table table-sm table-hover  tablaPedido" id="dtBasicExample">
+          <thead class="thead-dark align-middle" style="background-color: black; color: white">
+            <tr>
+              <th style="text-align: center;">CORRELATIVO</th>
+              <th style="text-align: center;">SOCIO</th>
+              <th style="text-align: center;">SOLICITUD DE COBRO</th>
+              <th style="text-align: center;">MONTO DE COBRO</th>
+              <th style="text-align: center;">TIPO DE PEDIDO</th>
+              <th style="text-align: center;">MUNICIPIO DE RECEPCIÓN</th>
+              <th style="text-align: center;">MUNICIPIO DE ENTREGA</th>
+              <th style="text-align: center;">ESTADO</th>
+              <th style="text-align: center;">DOMICILIAR DE RECEPCIÓN</th>
+              <th style="text-align: center;">DOMICILIAR DE ENTREGA</th>
+              <th style="text-align: center;" *ngIf="rolSocio == 0">HISTORIAL DE ESTADO</th>
+              <th style="text-align: center;" *ngIf="rolSocio == 0">DESCARGAR PDF</th>
+              <th style="text-align: center;" *ngIf="rolSocio == 0">EDITAR</th>
+              <th style="text-align: center;" *ngIf="rolSocio == 0">ASIGNACIÓN DOMICILIAR</th>
+              <!-- <th style="text-align: center;" *ngIf="rolSocio == 1">Estado del pedido</th> -->
+            </tr>
+          </thead>
+          <tbody *ngFor="let c of filtroDomiciliar | paginate: {itemsPerPage: numeroItems, currentPage: pageActual}">
+            <tr>
+              <td style="text-align: center;">{{c.FechaHoraEntregaC}}/{{c.IdPedido}}</td>
+              <td style="text-align: center;">{{c.Socio}}</td>
+              <td style="text-align: center;">{{c.SolicitudCobro}}</td>
+              <td style="text-align: right;">{{c.Moneda}}.{{c.MontoCobro}}</td>
+              <td style="text-align: center;">{{c.TipoPedido}}</td>
+              <td style="text-align: center;">{{c.MunicipioRecepcion}}</td>
+              <td style="text-align: center;">{{c.MunicipioEntrega}}</td>
+              <td style="text-align: center;">{{c.Estado}}</td>
+              <td style="text-align: center;">{{c.DomiliciarRecepcion}}</td>
+              <td style="text-align: center;">{{c.DomiliciarEntrega}}</td>
+              <td style="text-align: center;" *ngIf="rolSocio == 0" class="center">
+                <button (click)="historiaPedidos(c.IdPedido)" type="button" data-bs-target="#modal4"
+                  data-bs-toggle="modal" class="btn btn-info"> <i class="fas fa-file-alt"></i></button>
+              </td>
+              <td style="text-align: center;" *ngIf="rolSocio == 0" class="center">
+                <button type="button" class="btn btn-primary" data-target="#modal1" (click)="dowlandPDF(c.IdPedido)">
+                  <i class="fas fa-download"></i>
+                </button>
+              </td>
+              <td style="text-align: center;" *ngIf="rolSocio == 0" class="center">
+                <button type="button" class="btn btn-secondary" (click)="editarPedidos(c.IdPedido)"
+                  data-bs-target="#modal2" data-bs-toggle="modal">
+                  <i class="fas fa-pencil-alt"></i>
+                </button>
+              </td>
+              <td style="text-align: center;" *ngIf="rolSocio == 0" class="center">
+                <button type="button" class="btn btn-warning" data-bs-target="#modal10" data-bs-toggle="modal"
+                  (click)="asignacionDomiciliar(c.IdPedido)">
+                  <i class="fas fa-motorcycle"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <pagination-controls (pageChange)="pageActual = $event" responsive="true" previousLabel="Antes"
+          nextLabel="Siguiente"></pagination-controls>
+      </div>
+
+
+    </div>
+    <div class="row" *ngIf="filtroFecha == 5">
+      <button style="width: 200px; margin-top: 20px; background-color: white; border-color: #e85327; border-radius: 5px; color: #e85327; font-weight: bold; font-size: 17px;
+      margin-right: 50px;" type="button" class="btn btn-primary" (click)="descargarExcel()">
+        DESCARGAR EXCEL <i class="fas fa-file-excel" style="color: #e85327;"></i>
+      </button>
+
+      <div class=" table-responsive" style="margin-left: -12px;">
+        <table class="table table-sm table-hover  tablaPedido" id="dtBasicExample">
+          <thead class="thead-dark align-middle" style="background-color: black; color: white">
+            <tr>
+              <th style="text-align: center;">CORRELATIVO</th>
+              <th style="text-align: center;">SOCIO</th>
+              <th style="text-align: center;">SOLICITUD DE COBRO</th>
+              <th style="text-align: center;">MONTO DE COBRO</th>
+              <th style="text-align: center;">TIPO DE PEDIDO</th>
+              <th style="text-align: center;">MUNICIPIO DE RECEPCIÓN</th>
+              <th style="text-align: center;">MUNICIPIO DE ENTREGA</th>
+              <th style="text-align: center;">ESTADO</th>
+              <th style="text-align: center;">DOMICILIAR DE RECEPCIÓN</th>
+              <th style="text-align: center;">DOMICILIAR DE ENTREGA</th>
+              <th style="text-align: center;" *ngIf="rolSocio == 0">HISTORIAL DE ESTADO</th>
+              <th style="text-align: center;" *ngIf="rolSocio == 0">DESCARGAR PDF</th>
+              <th style="text-align: center;" *ngIf="rolSocio == 0">EDITAR</th>
+              <th style="text-align: center;" *ngIf="rolSocio == 0">ASIGNACIÓN DOMICILIAR</th>
+              <!-- <th style="text-align: center;" *ngIf="rolSocio == 1">Estado del pedido</th> -->
+            </tr>
+          </thead>
+          <tbody *ngFor="let c of filtroSocio | paginate: {itemsPerPage: numeroItems, currentPage: pageActual}">
+            <tr>
+              <td style="text-align: center;">{{c.FechaHoraEntregaC}}/{{c.IdPedido}}</td>
+              <td style="text-align: center;">{{c.Socio}}</td>
+              <td style="text-align: center;">{{c.SolicitudCobro}}</td>
+              <td style="text-align: right;">{{c.Moneda}}.{{c.MontoCobro}}</td>
+              <td style="text-align: center;">{{c.TipoPedido}}</td>
+              <td style="text-align: center;">{{c.MunicipioRecepcion}}</td>
+              <td style="text-align: center;">{{c.MunicipioEntrega}}</td>
+              <td style="text-align: center;">{{c.Estado}}</td>
+              <td style="text-align: center;">{{c.DomiliciarRecepcion}}</td>
+              <td style="text-align: center;">{{c.DomiliciarEntrega}}</td>
+              <td style="text-align: center;" *ngIf="rolSocio == 0" class="center">
+                <button (click)="historiaPedidos(c.IdPedido)" type="button" data-bs-target="#modal4"
+                  data-bs-toggle="modal" class="btn btn-info"> <i class="fas fa-file-alt"></i></button>
+              </td>
+              <td style="text-align: center;" *ngIf="rolSocio == 0" class="center">
+                <button type="button" class="btn btn-primary" data-target="#modal1" (click)="dowlandPDF(c.IdPedido)">
+                  <i class="fas fa-download"></i>
+                </button>
+              </td>
+              <td style="text-align: center;" *ngIf="rolSocio == 0" class="center">
+                <button type="button" class="btn btn-secondary" (click)="editarPedidos(c.IdPedido)"
+                  data-bs-target="#modal2" data-bs-toggle="modal">
+                  <i class="fas fa-pencil-alt"></i>
+                </button>
+              </td>
+              <td style="text-align: center;" *ngIf="rolSocio == 0" class="center">
+                <button type="button" class="btn btn-warning" data-bs-target="#modal10" data-bs-toggle="modal"
+                  (click)="asignacionDomiciliar(c.IdPedido)">
+                  <i class="fas fa-motorcycle"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <pagination-controls (pageChange)="pageActual = $event" responsive="true" previousLabel="Antes"
+          nextLabel="Siguiente"></pagination-controls>
+      </div>
+
+
+    </div>
+    <div class="row" *ngIf="filtroFecha == 6">
+      <button style="width: 200px; margin-top: 20px; background-color: white; border-color: #e85327; border-radius: 5px; color: #e85327; font-weight: bold; font-size: 17px;
+      margin-right: 50px;" type="button" class="btn btn-primary" (click)="descargarExcel()">
+        DESCARGAR EXCEL <i class="fas fa-file-excel" style="color: #e85327;"></i>
+      </button>
+
+      <div class=" table-responsive" style="margin-left: -12px;">
+        <table class="table table-sm table-hover  tablaPedido" id="dtBasicExample">
+          <thead class="thead-dark align-middle" style="background-color: black; color: white">
+            <tr>
+              <th style="text-align: center;">CORRELATIVO</th>
+              <th style="text-align: center;">SOCIO</th>
+              <th style="text-align: center;">SOLICITUD DE COBRO</th>
+              <th style="text-align: center;">MONTO DE COBRO</th>
+              <th style="text-align: center;">TIPO DE PEDIDO</th>
+              <th style="text-align: center;">MUNICIPIO DE RECEPCIÓN</th>
+              <th style="text-align: center;">MUNICIPIO DE ENTREGA</th>
+              <th style="text-align: center;">ESTADO</th>
+              <th style="text-align: center;">DOMICILIAR DE RECEPCIÓN</th>
+              <th style="text-align: center;">DOMICILIAR DE ENTREGA</th>
+              <th style="text-align: center;" *ngIf="rolSocio == 0">HISTORIAL DE ESTADO</th>
+              <th style="text-align: center;" *ngIf="rolSocio == 0">DESCARGAR PDF</th>
+              <th style="text-align: center;" *ngIf="rolSocio == 0">EDITAR</th>
+              <th style="text-align: center;" *ngIf="rolSocio == 0">ASIGNACIÓN DOMICILIAR</th>
+              <!-- <th style="text-align: center;" *ngIf="rolSocio == 1">Estado del pedido</th> -->
+            </tr>
+          </thead>
+          <tbody
+            *ngFor="let c of obtenerPedidoBuscado | paginate: {itemsPerPage: numeroItems, currentPage: pageActual}">
+            <tr>
+              <td style="text-align: center;">{{c.FechaHoraEntregaC}}/{{c.IdPedido}}</td>
+              <td style="text-align: center;">{{c.Socio}}</td>
+              <td style="text-align: center;">{{c.SolicitudCobro}}</td>
+              <td style="text-align: right;">{{c.Moneda}}.{{c.MontoCobro}}</td>
+              <td style="text-align: center;">{{c.TipoPedido}}</td>
+              <td style="text-align: center;">{{c.MunicipioRecepcion}}</td>
+              <td style="text-align: center;">{{c.MunicipioEntrega}}</td>
+              <td style="text-align: center;">{{c.Estado}}</td>
+              <td style="text-align: center;">{{c.DomiliciarRecepcion}}</td>
+              <td style="text-align: center;">{{c.DomiliciarEntrega}}</td>
+              <td style="text-align: center;" *ngIf="rolSocio == 0" class="center">
+                <button (click)="historiaPedidos(c.IdPedido)" type="button" data-bs-target="#modal4"
+                  data-bs-toggle="modal" class="btn btn-info"> <i class="fas fa-file-alt"></i></button>
+              </td>
+              <td style="text-align: center;" *ngIf="rolSocio == 0" class="center">
+                <button type="button" class="btn btn-primary" data-target="#modal1" (click)="dowlandPDF(c.IdPedido)">
+                  <i class="fas fa-download"></i>
+                </button>
+              </td>
+              <td style="text-align: center;" *ngIf="rolSocio == 0" class="center">
+                <button type="button" class="btn btn-secondary" (click)="editarPedidos(c.IdPedido)"
+                  data-bs-target="#modal2" data-bs-toggle="modal">
+                  <i class="fas fa-pencil-alt"></i>
+                </button>
+              </td>
+              <td style="text-align: center;" *ngIf="rolSocio == 0" class="center">
+                <button type="button" class="btn btn-warning" data-bs-target="#modal10" data-bs-toggle="modal"
+                  (click)="asignacionDomiciliar(c.IdPedido)">
+                  <i class="fas fa-motorcycle"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <pagination-controls (pageChange)="pageActual = $event" responsive="true" previousLabel="Antes"
+          nextLabel="Siguiente"></pagination-controls>
+      </div>
+
+
+    </div>
+
+    <!--Historial para los estados de los pedidos -->
+    <div class="modal fade" id="modal4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1"
+      aria-hidden="true">
+      <div class="modal-dialog  modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Historial del estado del pedido</h5>
+            <button type="button" class="btn-close" #closeBUtton data-bs-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="ibox ">
+                  <div class="ibox-content">
+
+                    <table class="table">
+                      <thead style="background-color: black; color: white; text-align: center;" class="align-middle" >
+                        <tr>
+                          <th>ID</th>
+                          <th>DESCRIPCIÓN</th>
+                          <th>OBSERVACIÓN</th>
+                          <th>FECHA DE INICIO</th>
+                          <th>FECHA FIN</th>
+                        </tr>
+                      </thead>
+                      <tbody *ngFor="let c of HistorialEstado">
+                        <tr style="text-align: center;">
+                          <td>{{c.IdEstado}}</td>
+                          <td>{{c.Descripcion}}</td>
+                          <td>{{c.Observacion}}</td>
+                          <td>{{c.FechaInicio}}</td>
+                          <td>{{c.FechaFin}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <div class="row">
+                      <div class="col-sm-4">
+                        <h5>Estados del pedido <strong style="color: red; font-size: 18px;">*</strong></h5>
+                        <div class="ng-autocomplete2">
+                          <ng-autocomplete placeHolder="Seleccione el estado" [data]="listadoEstado"
+                            (selected)='getIdEstado($event)' [searchKeyword]="keyword" [itemTemplate]="itemTemplate2"
+                            [notFoundTemplate]="notFoundTemplate2">
+                          </ng-autocomplete>
+
+                          <ng-template #itemTemplate2 let-item>
+                            <a [innerHTML]="item.Descripcion"></a>
+                          </ng-template>
+
+                          <ng-template #notFoundTemplate2 let-notFound>
+                            <div [innerHTML]="notFound"></div>
+                          </ng-template>
+                        </div>
+                      </div>
+
+                      <div class="col-sm-8">
+                        <h5>Observación del cambio de estado</h5>
+                        <div class="form-group">
+                          <textarea class="form-control" id="Observacion" name="Observacion" #Observacion="ngModel"
+                            [(ngModel)]="DatosEstado.Observacion" placeholder="Ingrese la Observacion" cols="30"
+                            rows="2"></textarea>
+                        </div>
+                      </div>
+                      <br>
+
+                      <br>
+                      <br>
+                      <br>
+                      <br>
+                      <br>
+
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" style="background-color: #ed8524; border-color: #ed8524;"
+                (click)="crearDatosEstado();">Cambiar
+                estado</button>
+
+              <button type="button" style="background-color: #343a40; border-color: #343a40;" class="btn btn-secondary"
+                data-dismiss="modal">Cerrar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal para la impresion del pdf -->
+    <div class="modal fade" id="modal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1"
+      aria-hidden="true">
+      <div class="modal-dialog  modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Detalle del PDF</h5>
+            <button type="button" class="btn-close" #closeBUtton data-bs-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form #datosSocioForm="ngForm" id="pruebaPd" style="margin: 0.5cm 0.5cm 0.5cm 0.5cm;">
+              <div class="row">
+                <div class="col-lg-5">
+                  <img src="assets/serbaco.png" alt="Serbaco">
+                </div>
+                <div class="col-lg-7" style="border-bottom:black 1px solid">
+                  <h5 style="color: black;"><b>ORDEN DE ENVIO</b></h5>
+                </div>
+              </div>
+              <br>
+              <div class="row" style="margin-left: 60%;">
+                <h5 style="color: black;">
+                  NO. DE ENVIO {{obtenerFichaPDF.FechaHoraEntregaC}}/{{obtenerFichaPDF.IdPedido}}
+                </h5>
+              </div>
+              <div class="row" style="margin-left: 0.5cm">
+                <h5 style="color: black;">
+                  Datos Entrega
+                </h5>
+              </div>
+              <br>
+              <div class="row" style="margin-left: 0.3cm; margin-right: 0.3cm;">
+                <table class="footable table">
+                  <tbody>
+                    <tr>
+                      <th scope="row" style="text-align: right; width: 175px; color: black; font-size: 15px;">Cliente:
+                      </th>
+                      <td style="color: black; font-size: 15px;">{{obtenerFichaPDF.Socio}}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row" style="text-align: right; width: 175px; color: black; font-size: 15px;">Nombre
+                        quien recibe:</th>
+                      <td style="color: black; font-size: 15px;">{{obtenerFichaPDF.NombreRecibe}}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row" style="text-align: right; width: 175px; color: black; font-size: 15px;">Teléfono:
+                      </th>
+                      <td style="color: black; font-size: 15px;">{{obtenerFichaPDF.TelefonoRecibe}}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row" style="text-align: right; width: 175px; color: black; font-size: 15px;">Dirección
+                        donde
+                        se recoge:</th>
+                      <td style="color: black; font-size: 15px;">{{obtenerFichaPDF.DireccionRecepcion}}
+                         {{obtenerFichaPDF.ColoniaRecepcion}}
+                        {{obtenerFichaPDF.ReferenciaRecepcion}}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row" style="text-align: right; width: 175px; color: black; font-size: 15px;">Dirección
+                        donde
+                        se entrega:</th>
+                      <td style="color: black; font-size: 15px;">{{obtenerFichaPDF.DireccionEntrega}} {{obtenerFichaPDF.ColoniaEntrega}}
+                        {{obtenerFichaPDF.ReferenciaEntrega}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row" style="text-align: right; width: 175px; color: black; font-size: 15px;">Municipio
+                        de
+                        recepción:</th>
+                      <td style="color: black; font-size: 15px;">{{obtenerFichaPDF.MunicipioRecepcion}}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row" style="text-align: right; width: 175px; color: black; font-size: 15px;">Municipio
+                        de
+                        entrega:</th>
+                      <td style="color: black; font-size: 15px;">{{obtenerFichaPDF.MunicipioEntrega}}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row" style="text-align: right; width: 175px; color: black; font-size: 15px;">Fecha de
+                        entrega:</th>
+                      <td style="color: black; font-size: 15px;">{{obtenerFichaPDF.FechaHoraEntrega}}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row" style="text-align: right; width: 175px; color: black; font-size: 15px;">Recibe
+                        pago:
+                      </th>
+                      <td style="color: black; font-size: 15px;">{{obtenerFichaPDF.SolicitudCobro}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="row" style="margin-left: 0.3cm; margin-right: 0.3cm;" *ngIf="SolicitudCobroPedido == 1">
+                <table class="footable table table-bordered ">
+                  <thead>
+                    <tr>
+                      <th>Concepto de pago</th>
+                      <th>Forma de pago</th>
+                      <th>Monto de Cobro</th>
+                    </tr>
+                  </thead>
+                  <tbody >
+                    <tr *ngIf="obtenerFichaPDF.ConceptoPagoProducto == 'COBRO DE PRODUCTO'">
+                      <td style="color: black; font-size: 15px;" class="center">{{obtenerFichaPDF.ConceptoPagoProducto}}</td>
+                      <td style="color: black; font-size: 15px;" class="center">{{obtenerFichaPDF.FormaPagoProducto}}</td>
+                      <td style="color: black; font-size: 15px;" class="center">{{obtenerFichaPDF.CobroProducto}}</td>
+                    </tr>
+                    <tr *ngIf="obtenerFichaPDF.ConceptoPagoMensajeria == 'COBRO DE MENSAJERIA'">
+                      <td style="color: black; font-size: 15px;" class="center">{{obtenerFichaPDF.ConceptoPagoMensajeria}}</td>
+                      <td style="color: black; font-size: 15px;" class="center">{{obtenerFichaPDF.FormaPagoMensajeria}}</td>
+                      <td style="color: black; font-size: 15px;" class="center">{{obtenerFichaPDF.CobroMensajeria}}</td>
+                    </tr>
+                  </tbody>
+                  <!-- <tbody *ngFor="let c of DetallePagoPedido">
+                    <tr>
+                      <td style="color: black; font-size: 15px;" class="center">{{c.ConceptoPago}}</td>
+                      <td style="color: black; font-size: 15px;" class="center">{{c.FormaPago}}</td>
+                      <td style="color: black; font-size: 15px;" class="center">{{c.Moneda}}.{{c.MontoCobro}}</td>
+                    </tr>
+                  </tbody> -->
+                </table>
+              </div>
+
+              <div class="row" style="margin-left: 0.3cm; margin-right: 0.3cm;">
+                <table class="footable table table-bordered ">
+                  <thead>
+                    <tr>
+                      <th>Producto</th>
+                      <th>Especificacion</th>
+                      <th>Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style="color: black; font-size: 15px;">{{obtenerFichaPDF.TipoProducto}}</td>
+                      <td style="color: black; font-size: 15px;">{{obtenerFichaPDF.Especificaciones}}</td>
+                      <td style="text-align: right; color: black; font-size: 15px;">{{obtenerFichaPDF.MontoCobro}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="row" style="margin-left: 0.3cm; margin-right: 0.3cm;">
+                <table class="footable table table-bordered ">
+                  <tbody>
+                    <!-- <tr>
+                      <th scope="row" style="text-align: right; width: 175px; color: black; font-size: 15px;">Forma de
+                        pago:
+                      </th>
+                      <td style="color: black; font-size: 15px;">{{obtenerFichaPDF.FormaPago}}</td>
+                    </tr> -->
+                    <tr>
+                      <th scope="row" style="text-align: right; width: 175px; color: black; font-size: 15px;">
+                        Observaciones:</th>
+                      <td style="color: black; font-size: 15px;">{{obtenerFichaPDF.Observaciones}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <br>
+              <br>
+              <br>
+              <br>
+              <div class="row" style="margin-left: 50%;">
+                <h5>
+                  Fecha Creacion: {{obtenerFichaPDF.FechaCreacionPedido}}
+                </h5>
+              </div>
+
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal la edicion de los pedidos seleccionados -->
+    <div class="modal fade" id="modal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1"
+      aria-hidden="true">
+      <div class="modal-dialog  modal-xl ">
+        <div class="modal-content modal-dialog-scrollable">
+          <form #datosSocioForm="ngForm" id="pruebaPd2" (ngSubmit)="ActualizacionDatosPedido()"
+            style="margin: 0.5cm 0.5cm 0.5cm 0.5cm;">
+
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Detalle del pedido para su edición </h5>
+              <button type="button" class="btn-close" #closeBUtton data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-lg-5">
+                  <img src="assets/serbaco.png" alt="Serbaco">
+                </div>
+              </div>
+              <br>
+              <!-- Edicion de los datos del cliente -->
+
+              <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                  <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home"
+                    type="button" role="tab" aria-controls="nav-home" aria-selected="true">Datos del cliente</button>
+                  <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile"
+                    type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Datos del pedido</button>
+                  <button class="nav-link" id="nav-socio-tab" data-bs-toggle="tab" data-bs-target="#nav-socio"
+                    type="button" role="tab" aria-controls="nav-socio" aria-selected="false">Datos del socio</button>
+                </div>
+              </nav>
+              <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                  <div class="row">
+                    <!-- Nombre del cliente -->
+                    <div class="col-sm-6">
+                      <h5>Nombre del cliente</h5>
+                      <input type="text" name="NombreRecibe" #NombreRecibe="ngModel" 
+                        placeholder="Ingrese nombre de la persona quien recibe" class="form-control"
+                        [(ngModel)]="obtenerFichaPDF.NombreRecibe" id="NombreRecibe">
+                    </div>
+                    <!-- Telefono del cliente -->
+                    <div class="col-sm-4">
+                      <h5>Teléfono del cliente</h5>
+                      <input type="text" name="TelefonoRecibe" #TelefonoRecibe="ngModel"
+                        placeholder="Ingrese nombre de la persona quien recibe" class="form-control" autocomplete="off"
+                        [(ngModel)]="obtenerFichaPDF.TelefonoRecibe" id="TelefonoRecibe">
+                    </div>
+                  </div>
+                  <div class="row">
+                    <!-- Direccion de entrega -->
+                    <div class="col-sm-7">
+                      <h5>Dirección de entrega</h5>
+                      <div class="form-group">
+                        <input id="DireccionEntrega" name="DireccionEntrega" #DireccionEntrega="ngModel" type="text"
+                          class="form-control required" placeholder="Ingrese la dirección de entrega"
+                          [(ngModel)]="obtenerFichaPDF.DireccionEntrega">
+                      </div>
+                    </div>
+
+                    <!-- ComboBox Departamento Seleccionado-->
+                    <div class="col-sm-4">
+                      <h5>Departamento</h5>
+                      <div class="ng-autocomplete2">
+                        <ng-autocomplete placeHolder="Seleccione el departamento" name="DepartamentoEntrega"
+                          [(ngModel)]="obtenerFichaPDF.DepartamentoEntrega" [data]="comboDepartamentEntrega"
+                          (selected)='getComboMunicipioEntrega($event)' [searchKeyword]="keyword"
+                          [itemTemplate]="itemTemplate2" [notFoundTemplate]="notFoundTemplate2">
+                        </ng-autocomplete>
+
+                        <ng-template #itemTemplate2 let-item>
+                          <a [innerHTML]="item.Descripcion"></a>
+                        </ng-template>
+
+                        <ng-template #notFoundTemplate2 let-notFound>
+                          <div [innerHTML]="notFound"></div>
+                        </ng-template>
+                      </div>
+                    </div>
+                    <!-- ComboBox Municipio -->
+                    <div class="col-sm-4">
+                      <h5>Municipio</h5>
+                      <div class="ng-autocomplete2">
+                        <ng-autocomplete placeHolder="Seleccione el Municipio" name="MunicipioEntrega"
+                          [(ngModel)]="obtenerFichaPDF.MunicipioEntrega" [data]="comboMunicipioEntrega"
+                          (selected)='getComboZonaEntrega($event)' [searchKeyword]="keyword2"
+                          [itemTemplate]="itemTemplate3" [notFoundTemplate]="notFoundTemplate3">
+                        </ng-autocomplete>
+
+                        <ng-template #itemTemplate3 let-item>
+                          <a [innerHTML]="item.Descripcion"></a>
+                        </ng-template>
+
+                        <ng-template #notFoundTemplate3 let-notFound>
+                          <div [innerHTML]="notFound"></div>
+                        </ng-template>
+                      </div>
+                    </div>
+                    <!-- ComboBox Zona -->
+                    <div class="col-sm-4" *ngIf="visualizarComboZonaEntrega == 1">
+                      <h5>Zona</h5>
+                      <div class="ng-autocomplete2">
+                        <ng-autocomplete placeHolder="Seleccione la zona" name="ZonaEntrega"
+                          [(ngModel)]="obtenerFichaPDF.ZonaEntrega" [data]="comboZonaEntrega"
+                          (selected)='getComboColoniaEntrega($event)' [searchKeyword]="keyword2"
+                          [itemTemplate]="itemTemplate4" [notFoundTemplate]="notFoundTemplate4">
+                        </ng-autocomplete>
+
+                        <ng-template #itemTemplate4 let-item>
+                          <a [innerHTML]="item.Descripcion"></a>
+                        </ng-template>
+
+                        <ng-template #notFoundTemplate4 let-notFound>
+                          <div [innerHTML]="notFound"></div>
+                        </ng-template>
+                      </div>
+                    </div>
+                    <!-- ComboBox Zona -->
+                    <div class="col-sm-4" *ngIf="visualizarComboZonaEntrega == 0">
+                      <h5>Zona</h5>
+                      <div class="ng-autocomplete2">
+                        <ng-autocomplete placeHolder="Seleccione la zona" [data]="comboZonaEntrega"
+                          (selected)='getComboColoniaEntrega($event)' [searchKeyword]="keyword2"
+                          [itemTemplate]="itemTemplate5" [notFoundTemplate]="notFoundTemplate5">
+                        </ng-autocomplete>
+
+                        <ng-template #itemTemplate5 let-item>
+                          <a [innerHTML]="item.Descripcion"></a>
+                        </ng-template>
+
+                        <ng-template #notFoundTemplate5 let-notFound>
+                          <div [innerHTML]="notFound"></div>
+                        </ng-template>
+                      </div>
+                    </div>
+                    <!-- Combo Colonia cuando hay creado en el base de datos-->
+                    <div class="col-sm-4" *ngIf="visualizarComboColoniaEntrega == 1">
+                      <h5>Colonia</h5>
+                      <div class="ng-autocomplete2">
+                        <ng-autocomplete placeHolder="Seleccione la colonia" name="ColoniaEntrega"
+                          [(ngModel)]="obtenerFichaPDF.ColoniaEntrega" [data]="comboColoniaEntrega"
+                          [searchKeyword]="keyword2" (selected)='getIdColoniaEntrega($event)'
+                          [itemTemplate]="itemTemplate5" [notFoundTemplate]="notFoundTemplate5" >
+                        </ng-autocomplete>
+
+                        <ng-template #itemTemplate5 let-item>
+                          <a [innerHTML]="item.Descripcion"></a>
+                        </ng-template>
+
+                        <ng-template #notFoundTemplate5 let-notFound>
+                          <div [innerHTML]="notFound"></div>
+                        </ng-template>
+                      </div>
+                    </div>
+
+                    <!-- Combo Colonia por si en la base de datos esta en null-->
+                    <div class="col-sm-4" *ngIf="visualizarComboColoniaEntrega == 0">
+                      <h5>Colonia</h5>
+                      <div class="ng-autocomplete2">
+                        <ng-autocomplete placeHolder="Seleccione la colonia" [data]="comboColoniaEntrega"
+                          [searchKeyword]="keyword2" (selected)='getIdColoniaEntrega($event)'
+                          [itemTemplate]="itemTemplate3" [notFoundTemplate]="notFoundTemplate3">
+                        </ng-autocomplete>
+
+                        <ng-template #itemTemplate3 let-item>
+                          <a [innerHTML]="item.Descripcion"></a>
+                        </ng-template>
+
+                        <ng-template #notFoundTemplate3 let-notFound>
+                          <div [innerHTML]="notFound"></div>
+                        </ng-template>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                      <h5>Referencia dirección de entrega</h5>
+                      <div class="form-group">
+                        <textarea class="form-control" id="ReferenciaEntrega" name="ReferenciaEntrega"
+                          #ReferenciaEntrega="ngModel" [(ngModel)]="obtenerFichaPDF.ReferenciaEntrega"
+                          placeholder="Ingrese la especificacion" cols="30" rows="2"></textarea>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                  <div class="row">
+                    <div class="col-sm-4">
+                      <h5>Hora y Fecha de entrega</h5>
+                      <input type="datetime-local" id="FechaHoraEntregaT" (change)="obtenerFechaPedido($event)"
+                        name="FechaHoraEntregaT" [(ngModel)]="obtenerFichaPDF.FechaHoraEntregaT"
+                        placeholder="Ingrese el Telefono del cliente" class="form-control">
+                    </div>
+
+                    <div class="col-sm-3">
+                      <h5>Solicitud de cobro</h5>
+                      <div class="form-check abc-radio abc-radio-info form-check-inline">
+                        <input class="form-check-input" type="radio" name="SolicitudCobro2" id="SolicitudCobro1"
+                          #SolicitudCobro2="ngModel" [(ngModel)]="obtenerFichaPDF.SolicitudCobro2" [value]="1">
+                        <label class="form-check-label" for="inlineRadio1"> SI
+                        </label>
+                      </div>
+                      <div class="form-check abc-radio abc-radio-info form-check-inline">
+                        <input class="form-check-input" type="radio" name="SolicitudCobro2" id="SolicitudCobro2"
+                          #SolicitudCobro2="ngModel" [value]="0" [(ngModel)]="obtenerFichaPDF.SolicitudCobro2">
+                        <label class="form-check-label" for="inlineRadio2">
+                          No </label>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                      <h5>Tipo de pedido</h5>
+                      <div class="ng-autocomplete2">
+                        <ng-autocomplete #auto placeHolder="Seleccione el tipo pedido" name="TipoProducto"
+                          [(ngModel)]="obtenerFichaPDF.TipoProducto" [data]="obtenertTipoPedido"
+                          [searchKeyword]="keyword2" [itemTemplate]="itemTemplate20" (selected)='IdTipoPedidoS($event)'
+                          [notFoundTemplate]="notFoundTemplate20">
+                        </ng-autocomplete>
+
+                        <ng-template #itemTemplate20 let-item>
+                          <a [innerHTML]="item.Descripcion"></a>
+                        </ng-template>
+
+                        <ng-template #notFoundTemplate20 let-notFound>
+                          <div [innerHTML]="notFound"></div>
+                        </ng-template>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-4" *ngIf="obtenerFichaPDF.SolicitudCobro2 == 1">
+                      <h5>Concepto de pago<strong style="color: red; font-size: 15px;">*</strong></h5>
+                      <div class="ng-autocomplete2">
+                        <ng-autocomplete #auto placeHolder="Seleccione el concepto de pago" [data]="conceptoPago"
+                          [searchKeyword]="keyword2" [itemTemplate]="itemTemplate210"
+                          (selected)='IdConceptoPagoS($event)' [notFoundTemplate]="notFoundTemplate210">
+                        </ng-autocomplete>
+
+                        <ng-template #itemTemplate210 let-item>
+                          <a [innerHTML]="item.Descripcion"></a>
+                        </ng-template>
+
+                        <ng-template #notFoundTemplate210 let-notFound>
+                          <div [innerHTML]="notFound"></div>
+                        </ng-template>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-3" *ngIf="obtenerFichaPDF.SolicitudCobro2 == 1">
+                      <h5>Forma de pago<strong style="color: red; font-size: 15px;">*</strong></h5>
+                      <div class="ng-autocomplete2">
+                        <ng-autocomplete #auto placeHolder="Seleccione la forma de pago" [data]="obtenertTipoFormaPago"
+                          [searchKeyword]="keyword2" [itemTemplate]="itemTemplate21" (selected)='IdFormaPagoS2($event)'
+                          [notFoundTemplate]="notFoundTemplate21">
+                        </ng-autocomplete>
+
+                        <ng-template #itemTemplate21 let-item>
+                          <a [innerHTML]="item.Descripcion"></a>
+                        </ng-template>
+
+                        <ng-template #notFoundTemplate21 let-notFound>
+                          <div [innerHTML]="notFound"></div>
+                        </ng-template>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-3" *ngIf="obtenerFichaPDF.SolicitudCobro2 == 1">
+                      <h5>Monto de cobro</h5>
+                      <div class="input-group m-b">
+
+                        <input type="number" class="form-control" name="MontoCobro" id="MontoCobro" step=".01"
+                          (change)="obtenerMontoDetallePago($event)">
+
+                      </div>
+                    </div>
+
+                    <div class="col-sm-2" *ngIf="obtenerFichaPDF.SolicitudCobro2 == 1">
+                      <h5>Añadir cobro</h5>
+                      <button type="button" class="btn btn-primary" style="text-align: center;"
+                        (click)="agregarFormaPago()"><i class="fas fa-plus"></i></button>
+                    </div>
+
+                    <div style="margin-top: 20px;" class="col-sm-12" *ngIf="obtenerFichaPDF.SolicitudCobro2 == 1">
+                      <table class="footable table table-bordered ">
+                        <thead>
+                          <tr>
+                            <th>Concepto de pago</th>
+                            <th>Forma de pago</th>
+                            <th>Monto de Cobro</th>
+                            <th>Editar</th>
+                          </tr>
+                        </thead>
+                        <tbody *ngFor="let c of DetallePagoPedido">
+                          <tr>
+                            <td style="color: black; font-size: 15px;" class="center">{{c.ConceptoPago}}</td>
+                            <td style="color: black; font-size: 15px;" class="center">{{c.FormaPago}}</td>
+                            <td style="color: black; font-size: 15px;" class="center">{{c.MontoCobro}}</td>
+                            <td style="text-align: center;" *ngIf="rolSocio == 0" class="center">
+                              <button type="button" class="btn btn-secondary"
+                                (click)="editarDetallePago(c.IdDetalleImportePedido)">
+                                <i class="fas fa-pencil-alt"></i>
+                              </button>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <br>
+
+
+                    <div class="col-sm-4" *ngIf="habilitarMontoCobro == 1">
+                      <h5>Concepto de pago<strong style="color: red; font-size: 15px;">*</strong></h5>
+                      <div class="ng-autocomplete2">
+                        <ng-autocomplete #auto placeHolder="Seleccione el concepto de pago" [data]="conceptoPago"
+                          [searchKeyword]="keyword2" [itemTemplate]="itemTemplate210" name="ConceptoPagoEdicion"
+                          [(ngModel)]="ConceptoPagoEdicion"
+                          (selected)='IdConceptoPagoS($event)' [notFoundTemplate]="notFoundTemplate210">
+                        </ng-autocomplete>
+
+                        <ng-template #itemTemplate210 let-item>
+                          <a [innerHTML]="item.Descripcion"></a>
+                        </ng-template>
+
+                        <ng-template #notFoundTemplate210 let-notFound>
+                          <div [innerHTML]="notFound"></div>
+                        </ng-template>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-3" *ngIf="habilitarMontoCobro == 1">
+                      <h5>Forma de pago<strong style="color: red; font-size: 15px;">*</strong></h5>
+                      <div class="ng-autocomplete2">
+                        <ng-autocomplete #auto placeHolder="Seleccione la forma de pago" [data]="obtenertTipoFormaPago"
+                          [searchKeyword]="keyword2" [itemTemplate]="itemTemplate21" (selected)='IdFormaPagoS2($event)'
+                          name="FormaPagoEdicion" [(ngModel)]="FormaPagoEdicion" [notFoundTemplate]="notFoundTemplate21">
+                        </ng-autocomplete>
+
+                        <ng-template #itemTemplate21 let-item>
+                          <a [innerHTML]="item.Descripcion"></a>
+                        </ng-template>
+
+                        <ng-template #notFoundTemplate21 let-notFound>
+                          <div [innerHTML]="notFound"></div>
+                        </ng-template>
+                      </div>
+                    </div>
+                    <div class="col-sm-2" *ngIf="habilitarMontoCobro == 1">
+                      <h5>Monto de cobro</h5>
+                      <div class="input-group m-b">
+                        <input type="text" class="form-control" name="MontoCobro2" id="MontoCobro2" placeholder="0.00"
+                          [value]="MontoCobro2" (change)="ObtenerMonto($event)">
+
+                      </div>
+                    </div>
+                    <div class="col-sm-2" *ngIf="habilitarMontoCobro == 1">
+                      <button type="button" style="margin-top: 25px;" (click)="edicionMontoDetallePagoSeleccionado()"
+                        class="btn btn-primary">Editar
+                        Monto</button>
+                    </div>
+
+                    <div style="margin-top: 15px;" class="col-sm-4">
+                      <h5>Observaciones</h5>
+                      <div class="form-group">
+                        <textarea class="form-control" id="Observaciones" name="Observaciones" #Observaciones="ngModel"
+                          [(ngModel)]="obtenerFichaPDF.Observaciones" placeholder="Ingrese la Observacion" cols="30"
+                          rows="2"></textarea>
+                      </div>
+                    </div>
+                    <div style="margin-top: 15px;" class="col-sm-4">
+                      <h5>Especificaciones</h5>
+                      <div class="form-group">
+                        <textarea class="form-control" id="Especificaciones" name="Especificaciones"
+                          #Especificaciones="ngModel" [(ngModel)]="obtenerFichaPDF.Especificaciones"
+                          placeholder="Ingrese la especificacion" cols="30" rows="2"></textarea>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div style="height: 300px;" class="tab-pane fade" id="nav-socio" role="tabpanel" aria-labelledby="nav-socio-tab">
+                  <div  class="col-sm-8" *ngIf="rolSocio == 0">
+                    <h5>Seleccionar socio <strong style="color: red; font-size: 18px;">*</strong></h5>
+                    <div class="ng-autocomplete2">
+                      <ng-autocomplete placeHolder="Seleccione al socio" [data]="comboSocio" [searchKeyword]="keyword10" name="NombreSocio"
+                      [(ngModel)]="NombreSocio"
+                        [itemTemplate]="itemTemplate1" (selected)='getIdSocio($event)' [notFoundTemplate]="notFoundTemplate1">
+                      </ng-autocomplete>
+                
+                      <ng-template #itemTemplate1 let-item>
+                        <a [innerHTML]="item.Socio"></a>
+                      </ng-template>
+                
+                      <ng-template #notFoundTemplate1 let-notFound>
+                        <div [innerHTML]="notFound"></div>
+                      </ng-template>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-8">
+                    <h5>Seleccione la dirección <strong style="color: red; font-size: 18px;">*</strong></h5>
+                    <div class="ng-autocomplete2">
+                        <ng-autocomplete placeHolder="Seleccione la direccion del socio"
+                            [data]="obtenerDireccionesSocio" [searchKeyword]="keyword210"
+                            [itemTemplate]="itemTemplate13"
+                            (selected)='getIdDireccion($event)'
+                            [notFoundTemplate]="notFoundTemplate13">
+                        </ng-autocomplete>
+
+                        <ng-template #itemTemplate13 let-item>
+                            <a [innerHTML]="item.Direccion"></a>
+                        </ng-template>
+
+                        <ng-template #notFoundTemplate13 let-notFound>
+                            <div [innerHTML]="notFound"></div>
+                        </ng-template>
+                    </div>
+                </div>
+                </div>
+              </div>
+
+            </div>
+            <div class="modal-footer">
+              <button type="submit" style="background-color: #ed8524; border-color: #ed8524;" class="btn btn-primary">Editar datos</button>
+              <button type="button" style="background-color: #343a40; border-color: #343a40;" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal para asignar los domiciliares -->
+    <div class="modal fade" id="modal10" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1"
+      aria-hidden="true">
+      <div class="modal-dialog  modal-lg modal-dialog-scrollable">
+        <div class="modal-content" >
+          <form #datosSocioForm="ngForm" id="pruebaPd5" (ngSubmit)="crearAsignacionPedidoD()">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Asignacion domiciliar</h5>
+              <button type="button" class="btn-close" #closeBUtton data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" style="height: 375px;">
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="ibox ">
+
+                    <div class="ibox-content">
+                      <div class="row">
+                        <!-- ComboBox Domiciliar de recepcion Seleccionado-->
+                        <div class="col-sm-8">
+                          <h5>Domiciliar que recibe</h5>
+                          <div class="ng-autocomplete2">
+                            <ng-autocomplete placeHolder="Seleccione al domiciliar que recibe"
+                              name="DomiciliarRecepcion" [(ngModel)]="DomiciliarRecepcion" [data]="ListaDomiciliar"
+                              (selected)='ObtenerDomiciliarRecepcion($event)' [searchKeyword]="keyword18"
+                              [itemTemplate]="itemTemplate50" [notFoundTemplate]="notFoundTemplate50">
+                            </ng-autocomplete>
+
+                            <ng-template #itemTemplate50 let-item>
+                              <a [innerHTML]="item.Domiciliar"></a>
+                            </ng-template>
+
+                            <ng-template #notFoundTemplate50 let-notFound>
+                              <div [innerHTML]="notFound"></div>
+                            </ng-template>
+                          </div>
+                        </div>
+                        <!-- ComboBox Domiciliar de entrega Seleccionado-->
+                        <div class="col-sm-8" >
+                          <h5>Domiciliar de entrega</h5>
+                          <div class="ng-autocomplete2" >
+                            <ng-autocomplete placeHolder="Seleccione al domiciliar que entrega el pedido"
+                              name="DomiciliarEntrega" [(ngModel)]="DomiciliarEntrega" [data]="ListaDomiciliar"
+                              (selected)='ObtenerDomiciliarEntrega($event)' [searchKeyword]="keyword18"
+                              [itemTemplate]="itemTemplate51" [notFoundTemplate]="notFoundTemplate51">
+                            </ng-autocomplete>
+
+                            <ng-template #itemTemplate51 let-item>
+                              <a [innerHTML]="item.Domiciliar"></a>
+                            </ng-template>
+
+                            <ng-template #notFoundTemplate51 let-notFound>
+                              <div [innerHTML]="notFound"></div>
+                            </ng-template>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                   
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+
+            <div class="modal-footer" >
+              <button type="submit" style="background-color: #ed8524; border-color: #ed8524;" class="btn btn-primary" *ngIf="botonAsignar == 0">Asignar domiciliar</button>
+              <button type="submit" style="background-color: #ed8524; border-color: #ed8524;" class="btn btn-primary" *ngIf="botonAsignar == 1">Editar asignacion domiciliar</button>
+              <button type="button" style="background-color: #343a40; border-color: #343a40;" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pie de página -->
+    <div class="footer" style="text-align: center;">
+      <div>
+        Serbaco &copy; 2021
+      </div>
+    </div>
+  </div>
+</body>

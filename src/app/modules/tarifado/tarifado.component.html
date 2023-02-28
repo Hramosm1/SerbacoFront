@@ -1,0 +1,405 @@
+<body>
+    <div class="row divPartner">
+        <div class="accordion accordion-flush acordeon" id="accordionFlushExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-headingTwo">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                        SECTOR
+                    </button>
+                </h2>
+                <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
+                    data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="ibox ">
+                                    <div class="ibox-content">
+                                        <!-- Formato para guardar los datos del sector -->
+                                        <div class="row" *ngIf="IdEdicionSector == 0">
+                                            <div class="col-sm-8">
+                                                <h5>Nombre del sector<strong style="color: red; font-size: 15px;">*</strong></h5>
+                                                <input type="text" name="Descripcion" #Descripcion="ngModel"
+                                                placeholder="Ingrese el nombre del sector"
+                                                class="form-control" [(ngModel)]="datosSectores.Descripcion"
+                                                id="Descripcion">
+                                            </div> 
+                                            <br>
+                                            <br>
+                                            <div class="col-sm-4">
+                                                <h5 style="align-content: center;">Crear Sector</h5>
+                                                <button type="button" class="btn btn-primary" style="text-align: center; align-items: center; background-color: #e85327; border-color:  #e85327;"
+                                                (click)="creacionSector()"><i class="fas fa-plus"></i></button>
+                                            </div> 
+                                        </div>
+                                        <!-- Formato para editar los datos del sector -->
+                                        <div class="row" *ngIf="IdEdicionSector == 1">
+                                            <div class="col-sm-8">
+                                                <h5>Nombre del sector</h5>
+                                                <input type="text" name="Descripcion" #Descripcion="ngModel"
+                                                placeholder="Ingrese el nombre del sector"
+                                                class="form-control" [(ngModel)]="datosEdicionSectores.Descripcion"
+                                                id="Descripcion2">
+                                            </div> 
+                                            <br>
+                                            <br>
+                                            <div class="col-sm-4">
+                                                <h5 style="align-content: center;">Editar sector</h5>
+                                                <button type="button" class="btn btn-primary" style="text-align: center; align-items: center; background-color: #e85327; border-color:  #e85327;"
+                                                (click)="EdicionDatosSector()"><i class="fas fa-pencil-alt"></i></button>
+                                            </div> 
+                                        </div>
+                                        <!-- Tabla informacion de sector -->
+                                        <div class="row" style="margin-top: 20px;">
+                                            <table class="table table-sm  table-responsive-xl table-hove" id="tablaSector">
+                                                <thead class="thead-dark align-middle" style="background-color: black; color: white;text-align: center;">
+                                                    <tr>
+                                                        <th style="text-align: center;">ID SECTOR</th>
+                                                        <th style="text-align: center;">DESCRIPCIÓN</th>
+                                                        <th style="text-align: center;">FECHA REGISTRO</th>
+                                                        <th style="text-align: center;">ESTADO</th>
+                                                        <th style="text-align: center;">MODIFICAR</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody
+                                                    *ngFor="let c of ListaSectores ">
+                                                    <tr>
+                                                        <td style="text-align: center;">{{c.IdSector}}</td>
+                                                        <td style="text-align: center;">{{c.Descripcion}}</td>
+                                                        <td style="text-align: center;">{{c.FechaRegistro}}</td>
+                                                        <td style="text-align: center;">{{c.Estado}}</td>
+                                                        
+                                                        <td style="text-align: center;" *ngIf="rolSocio == 0" class="center">
+                                                            <button type="button" class="btn btn-secondary" data-target="#modal10" data-toggle="modal"
+                                                                (click)="ObtenerDatosSector(c.IdSector,c.Descripcion)">
+                                                                <i class="fas fa-pencil-alt"></i>
+                                                            </button>
+                                                            
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                         
+                                            <br>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                
+                    </div>
+                </div>
+            </div>
+            
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-headingThree">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                        RUTA
+                    </button>
+                </h2>
+                <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree"
+                    data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="ibox ">
+                                    <div class="ibox-content">
+                                        <!-- Formato para guardar los datos de la ruta -->
+                                        <div class="row" >
+                                            <!-- ComboBox Sector -->
+                                            <div class="col-sm-3">
+                                                <h5>Sector<strong style="color: red; font-size: 15px;">*</strong></h5>
+                                                <div class="ng-autocomplete2">
+                                                    <ng-autocomplete placeHolder="Seleccione el sector"
+                                                        name="sector"
+                                                        [data]="ListaSectores"
+                                                        (selected)='IdSector($event)'
+                                                        [searchKeyword]="keyword" [itemTemplate]="itemTemplate"
+                                                        [notFoundTemplate]="notFoundTemplate"
+                                                        [(ngModel)]="sector">
+                                                    </ng-autocomplete>
+    
+                                                    <ng-template #itemTemplate let-item>
+                                                        <a [innerHTML]="item.Descripcion"></a>
+                                                    </ng-template>
+    
+                                                    <ng-template #notFoundTemplate let-notFound>
+                                                        <div [innerHTML]="notFound"></div>
+                                                    </ng-template>
+                                                </div>
+                                            </div>
+                                            <!-- ComboBox Municipio -->
+                                            <div class="col-sm-3">
+                                                <h5>Municipio<strong style="color: red; font-size: 15px;">*</strong></h5>
+                                                <div class="ng-autocomplete2">
+                                                    <ng-autocomplete placeHolder="Seleccione el Municipio"
+                                                        name="Municipio"
+                                                        [data]="comboMunicipioEntrega"
+                                                        (selected)='getComboZonaEntrega($event)' [searchKeyword]="keyword"
+                                                        [itemTemplate]="itemTemplate2"
+                                                        [notFoundTemplate]="notFoundTemplate2"
+                                                        [(ngModel)]="municipio">
+                                                    </ng-autocomplete>
+    
+                                                    <ng-template #itemTemplate2 let-item>
+                                                        <a [innerHTML]="item.Descripcion"></a>
+                                                    </ng-template>
+    
+                                                    <ng-template #notFoundTemplate2 let-notFound>
+                                                        <div [innerHTML]="notFound"></div>
+                                                    </ng-template>
+                                                </div>
+                                            </div>
+                                            <!-- ComboBox Zona -->
+                                            <div class="col-sm-3">
+                                                <h5>Zona</h5>
+                                                <div class="ng-autocomplete2">
+                                                    <ng-autocomplete placeHolder="Seleccione la zona" name="ZonaEntrega"
+                                                        [data]="comboZonaEntrega"
+                                                        (selected)='getComboColoniaEntrega($event)'
+                                                        [searchKeyword]="keyword" [itemTemplate]="itemTemplate3"
+                                                        [notFoundTemplate]="notFoundTemplate3"
+                                                        [(ngModel)]="zona">
+                                                    </ng-autocomplete>
+    
+                                                    <ng-template #itemTemplate3 let-item>
+                                                        <a [innerHTML]="item.Descripcion"></a>
+                                                    </ng-template>
+    
+                                                    <ng-template #notFoundTemplate3 let-notFound>
+                                                        <div [innerHTML]="notFound"></div>
+                                                    </ng-template>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-3" *ngIf="IdEdicionRuta == 0">
+                                                <h5 style="align-content: center;">Crear Ruta</h5>
+                                                <button type="button" class="btn btn-primary" style="text-align: center; align-items: center; background-color: #e85327; border-color:  #e85327;"
+                                                (click)="crearRuta()"><i class="fas fa-plus"></i></button>
+                                            </div>
+
+                                            <div class="col-sm-3" *ngIf="IdEdicionRuta == 1">
+                                                <h5 style="align-content: center;">Editar Ruta</h5>
+                                                <button type="button" class="btn btn-primary" style="text-align: center; align-items: center; background-color: #e85327; border-color:  #e85327;"
+                                                (click)="EditarRuta()"><i class="fas fa-pencil-alt"></i></button>
+                                            </div>
+                                        </div>
+
+                                        <div class="row" style="margin-top: 20px;">
+                                            <table class="table table-sm  table-responsive-xl table-hover" id="dtBasicExample2">
+                                                <thead class="thead-dark align-middle" style="background-color: black; color: white;text-align: center;">
+                                                    <tr>
+                                                        <th style="text-align: center;">ID RUTA</th>
+                                                        <th style="text-align: center;">SECTOR</th>
+                                                        <th style="text-align: center;">MUNICIPIO</th>
+                                                        <th style="text-align: center;">ZONA</th>
+                                                        <th style="text-align: center;">FECHA REGISTRO</th>
+                                                        <th style="text-align: center;">ESTADO</th>
+                                                        <th style="text-align: center;">MODIFICAR</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody
+                                                    *ngFor="let c of ListaRutas | paginate: {itemsPerPage: numeroItemsRuta, currentPage: pageActualRuta}">
+                                                    <tr>
+                                                        <td style="text-align: center;">{{c.IdRuta}}</td>
+                                                        <td style="text-align: center;">{{c.Sector}}</td>
+                                                        <td style="text-align: center;">{{c.Municipio}}</td>
+                                                        <td style="text-align: center;">{{c.Zona}}</td>
+                                                        <td style="text-align: center;">{{c.FechaRegistro}}</td>
+                                                        <td style="text-align: center;">{{c.Estado}}</td>
+                                                        <td style="text-align: center;" *ngIf="rolSocio == 0" class="center">
+                                                            <button type="button" class="btn btn-secondary" data-target="#modal10" data-toggle="modal"
+                                                                (click)="obtenerDatosRuta(c.Sector,c.Municipio,c.Zona,c.IdSector,c.IdMunicipio, c.IdZona,c.IdRuta)">
+                                                                <i class="fas fa-pencil-alt"></i>
+                                                            </button>
+                                                            
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <pagination-controls (pageChange)="pageActualRuta = $event" responsive="true" previousLabel="Antes"
+                                                nextLabel="Siguiente"></pagination-controls>
+                                            <br>
+                                        </div> 
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-headingOne">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#flush-collapseOne" aria-expanded="true" aria-controls="flush-collapseOne">
+                        TARIFA
+                    </button>
+                </h2>
+                <div id="flush-collapseOne" class="accordion-collapse collapse show" aria-labelledby="flush-headingOne"
+                    data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">
+                        <div class="row">
+                            <!-- ComboBox Sector origen-->
+                            <div class="col-sm-3">
+                                <h5>Sector de origen<strong style="color: red; font-size: 15px;"> *</strong></h5>
+                                <div class="ng-autocomplete2">
+                                    <ng-autocomplete placeHolder="Seleccione el sector"
+                                        name="sector3"
+                                        [data]="ListaSectorOrigen"
+                                        (selected)='IdSectorOrigen($event)'
+                                        [searchKeyword]="keyword" [itemTemplate]="itemTemplate4"
+                                        [notFoundTemplate]="notFoundTemplate4"
+                                        [(ngModel)]="sectorOrigen">
+                                    </ng-autocomplete>
+
+                                    <ng-template #itemTemplate4 let-item>
+                                        <a [innerHTML]="item.Descripcion"></a>
+                                    </ng-template>
+
+                                    <ng-template #notFoundTemplate4 let-notFound>
+                                        <div [innerHTML]="notFound"></div>
+                                    </ng-template>
+                                </div>
+                            </div>                                                  
+                            <!-- ComboBox Sector destino-->
+                            <div class="col-sm-3">
+                                <h5>Sector de destino<strong style="color: red; font-size: 15px;"> *</strong></h5>
+                                <div class="ng-autocomplete2">
+                                    <ng-autocomplete placeHolder="Seleccione el sector"
+                                        name="Sector4"
+                                        [data]="ListaSectorDestino"
+                                        (selected)='IdSectorDestino($event)'
+                                        [searchKeyword]="keyword" [itemTemplate]="itemTemplate5"
+                                        [notFoundTemplate]="notFoundTemplate5"
+                                        [(ngModel)]="sectorDestino">
+                                    </ng-autocomplete>
+
+                                    <ng-template #itemTemplate5 let-item>
+                                        <a [innerHTML]="item.Descripcion"></a>
+                                    </ng-template>
+
+                                    <ng-template #notFoundTemplate5 let-notFound>
+                                        <div [innerHTML]="notFound"></div>
+                                    </ng-template>
+                                </div>
+                            </div>                                           
+                            <!-- Monto de la tarifa -->
+                            <div class="col-sm-3" *ngIf="editarTarifa == 0">
+                                <h5>Monto de la tarifa<strong style="color: red; font-size: 15px;"> *</strong></h5>
+                                <input type="number" name="monto" #monto="ngModel"
+                                placeholder="Ingrese el monto"
+                                class="form-control" [(ngModel)]="datosTarifa.Monto"
+                                id="monto">
+                            </div> 
+
+                            <div class="col-sm-3" *ngIf="editarTarifa == 1">
+                                <h5>Monto de la tarifa<strong style="color: red; font-size: 15px;"> *</strong></h5>
+                                <input type="number" name="monto" #monto="ngModel"
+                                placeholder="Ingrese el monto"
+                                class="form-control" [(ngModel)]="datosEdicionTarifa.Monto"
+                                id="monto">
+                            </div> 
+
+
+                            <div class="col-sm-3" *ngIf="editarTarifa == 0">
+                                <h5 style="align-content: center;" >Crear Tarifa</h5>
+                                <button type="button" class="btn btn-primary"   style="text-align: center; align-items: center; background-color: #e85327; border-color:  #e85327;"
+                                (click)="crearTarifaRuta()"><i class="fas fa-plus"></i></button>
+                            </div>  
+
+                            <div class="col-sm-3" *ngIf="editarTarifa == 1">
+                                <h5 style="align-content: center;">Editar Tarifa</h5>
+                                <button type="button" class="btn btn-primary"   style="text-align: center; align-items: center; background-color: #e85327; border-color:  #e85327;"
+                                (click)="editarDatosTarifa()"><i class="fas fa-pencil-alt"></i></button>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top: 15px;">
+                            <div class="col-sm-3">
+                                <button type="button" class="btn btn-primary" style="text-align: center; align-items: center; background-color: #e85327; border-color:  #e85327;"
+                                (click)="visualizacionDatosMatriz()">Visualización matriz de tarifa</button>
+                            </div>  
+                            <div class="col-sm-6">
+                                <button type="button" class="btn btn-primary" style="text-align: center; align-items: center; background-color: #e85327; border-color:  #e85327;"
+                                (click)="visualizacionDatosTarifa()">Actualización de tarifa por sector</button>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="visualizacionMatrizz == 1" style="margin-top: 20px;">
+                            <table class="table table-sm  table-responsive-xl table-hover " id="dtBasicExample3">
+                                <thead class="thead-dark align-middle" style="background-color: black; color: white;text-align: center;">
+                                    <tr>
+                                        <th style="text-align: center;">LUGAR DE RECOLECCIÓN</th>
+                                        <th style="text-align: center;">SECTOR 1</th>
+                                        <th style="text-align: center;">SECTOR 2</th>
+                                        <th style="text-align: center;">SECTOR 3</th>
+                                        <th style="text-align: center;">SECTOR 4</th>
+                                        <th style="text-align: center;">SECTOR 5</th>
+                                        <th style="text-align: center;">SECTOR 6</th>
+                                        <th style="text-align: center;">SECTOR 7</th>
+                                        <th style="text-align: center;">SECTOR 8</th>
+                                        <th style="text-align: center;">SECTOR 9</th>
+                                    </tr>
+                                </thead>
+                                <tbody
+                                    *ngFor="let c of ListaTarifa | paginate: {itemsPerPage: numeroItemsTarifass, currentPage: pageActualTarifass}">
+                                    <tr>
+                                        <td style="text-align: center; width: 50px;">{{c.SectorOrigen}}</td>
+                                        <td style="text-align: center; font-size: 15px;">Q.{{c.SECTOR1}}.00</td>
+                                        <td style="text-align: center; font-size: 15px;">Q.{{c.SECTOR2}}.00</td>
+                                        <td style="text-align: center; font-size: 15px;">Q.{{c.SECTOR3}}.00</td>
+                                        <td style="text-align: center; font-size: 15px;">Q.{{c.SECTOR4}}.00</td>
+                                        <td style="text-align: center; font-size: 15px;">Q.{{c.SECTOR5}}.00</td>
+                                        <td style="text-align: center; font-size: 15px;">Q.{{c.SECTOR6}}.00</td>
+                                        <td style="text-align: center; font-size: 15px;">Q.{{c.SECTOR7}}.00</td>
+                                        <td style="text-align: center; font-size: 15px;">Q.{{c.SECTOR8}}.00</td>
+                                        <td style="text-align: center; font-size: 15px;">Q.{{c.SECTOR9}}.00</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <pagination-controls (pageChange)="pageActualTarifass = $event" responsive="true" previousLabel="Antes"
+                                nextLabel="Siguiente"></pagination-controls>
+                            <br>
+                        </div> 
+                        <div class="row" *ngIf="visualizacionTarifa == 1" style="margin-top: 20px;">
+                            <table class="table table-sm  table-responsive-xl table-hover" id="dtBasicExample4">
+                                <thead class="thead-dark align-middle" style="background-color: black; color: white;text-align: center;">
+                                    <tr>
+                                        <th style="text-align: center;">ID RUTA TARIFA</th>
+                                        <th style="text-align: center;">SECTOR ORIGEN</th>
+                                        <th style="text-align: center;">SECTOR DESTINO</th>
+                                        <th style="text-align: center;">MONTO</th>
+                                        <th style="text-align: center;">FECHA CREACION</th>
+                                        <th style="text-align: center;">MODIFICACIÓN</th>
+                                    </tr>
+                                </thead>
+                                <tbody
+                                    *ngFor="let c of ListaTarifaRuta | paginate: {itemsPerPage: numeroItemsTarifas, currentPage: pageActualTarifas}">
+                                    <tr>
+                                        <td style="text-align: center;">{{c.IdRutaSector}}</td>
+                                        <td style="text-align: center; font-size: 15px;">{{c.SectorOrigen}}</td>
+                                        <td style="text-align: center; font-size: 15px;">{{c.SectorDestino}}</td>
+                                        <td style="text-align: center; font-size: 15px;">{{c.Monto}}</td>
+                                        <td style="text-align: center; font-size: 15px;">{{c.FechaRegistro}}</td>
+                                        <td style="text-align: center;" *ngIf="rolSocio == 0" class="center">
+                                            <button type="button" class="btn btn-secondary" data-target="#modal10" data-toggle="modal"
+                                                (click)="parametrosObtenidosTarifa(c.IdRutaSector,c.IdSectorOrigen,c.SectorOrigen,c.IdSectorDestino,c.SectorDestino,c.Monto)">
+                                                <i class="fas fa-pencil-alt"></i>
+                                            </button>
+                                            
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <pagination-controls (pageChange)="pageActualTarifas = $event" responsive="true" previousLabel="Antes"
+                                nextLabel="Siguiente"></pagination-controls>
+                            <br>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>

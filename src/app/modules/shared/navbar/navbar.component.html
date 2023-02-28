@@ -1,0 +1,85 @@
+<body>
+    <div class="sidebar" [ngClass]="{'close':isCollapse}">
+        <div class="logo-details">
+            <i class='bx bxl-c-plus-plus'></i>
+            <span class="logo_name">SERBACO</span>
+        </div>
+        <ul class="nav-links">
+            <li [ngClass]="{'showMenu':isSubmenuPedido}">
+                <div class="iocn-link" (click)="SubmenuPedido()">
+                    <a>
+                        <i class='bx bx-line-chart'></i>
+                        <span class="link_name">Pedido</span>
+                    </a>
+                    <i class='bx bxs-chevron-down arrow' style="right: 100%;"></i>
+                </div>
+                <ul class="sub-menu">
+                    <li><a href="pedido/pedido">Ingreso de Pedidos</a></li>
+                    <li><a href="pedidoCF/pedidoCF">Ingreso de Pedidos C/F</a></li>
+                    <li><a href="listadoPedido/listadoPedido">Seguimiento de pedido</a></li>
+                </ul>
+            </li>
+            <li [ngClass]="{'showMenu':isSubmenuMantenimiento}">
+                <div class="iocn-link" (click)="SubmenuMantenimiento()">
+                    <a>
+                        <i class='bx bx-cog'></i>
+                        <span class="link_name">Setting</span>
+                    </a>
+                    <i class='bx bxs-chevron-down arrow'></i>
+                </div>
+                <ul class="sub-menu">
+                    <li><a href="socio/socio">Socio</a></li>
+                    <li><a href="domiciliar/domiciliar">Gestor domiciliar</a></li>
+                    <li><a href="tarifado/tarifado">Tarifado</a></li>
+                </ul>
+            </li>
+            <li [ngClass]="{'showMenu':isSubmenuCargasMasivas}">
+                <div class="iocn-link" (click)="SubmenuCargasMasivas()">
+                    <a>
+                        <i class='bx bx-upload'></i>
+                        <span class="link_name">Cargas Masivas</span>
+                    </a>
+                    <i class='bx bxs-chevron-down arrow'></i>
+                </div>
+                <ul class="sub-menu">
+                    <li><a href="cargaMasiva/cargaMasiva">Pedido</a></li>
+                    <li><a href="liquidacion/liquidacion">Liquidaciones</a></li>
+                </ul>
+            </li>
+            <li [ngClass]="{'showMenu':isSubmenuReporteria}">
+                <div class="iocn-link" (click)="SubmenuReporteria()">
+                    <a>
+                        <i class='bx bxs-notepad'></i>
+                        <span class="link_name">Reportería</span>
+                    </a>
+                    <i class='bx bxs-chevron-down arrow'></i>
+                </div>
+                <ul class="sub-menu">
+                    <li><a href="#">Reportes</a></li>
+                </ul>
+            </li>
+            <li>
+                <div class="profile-details">
+                    <div class="profile-content">
+                        <img src="assets/iconos/iconoSerbaco.png" alt="profileImg">
+                    </div>
+                    <div class="name-job">
+                        <div class="profile_name">{{usuario}}</div>
+                        <div class="job">Invitado</div>
+                    </div>
+                    <i class='bx bx-log-out' (click)="logout()"></i>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <section class="home-section">
+        <div class="home-content">
+            <i class='bx bx-menu' (click)="Collapse()"></i>
+
+        </div>
+
+
+    </section>
+
+</body>

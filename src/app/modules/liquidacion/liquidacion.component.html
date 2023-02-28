@@ -1,0 +1,56 @@
+<body>
+    <div class="row divPartner">
+        <div class="col-lg-3">
+            <h5>Selección de fecha <strong style="color: red; font-size: 18px;">*</strong></h5>
+            <input type="date" [(ngModel)]="fechaFin" id="FechaHoraEntregaFin" class="form-control"
+                (change)="obtenerFechaFin($event)">
+        </div>
+
+        <div class="col-lg-3">
+            <h5>.</h5>
+            <button style="width: 200px;  background-color: white; border-color: #e85327; border-radius: 5px; color: #e85327; font-weight: bold; font-size: 17px;
+                margin-right: 50px;" type="button" class="btn btn-primary" (click)="descargarExcel()">
+                DESCARGAR EXCEL <i class="fas fa-file-excel" style="color: #e85327;"></i>
+            </button>
+
+        </div>
+
+        <div class="center" style="margin-top: 15px;">
+            <ngx-file-drop dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)"
+                (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)" useDragEnter="true"
+                [showBrowseBtn]="false">
+                <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+                    Arrastra y suelta un archivo aquí.
+
+                    <button style="margin-left: 25px;" type="button" class="btn btn-secondary"
+                        (click)="openFileSelector()">Seleccionar archivo</button>
+                </ng-template>
+            </ngx-file-drop>
+            <br>
+            <div class="upload-table">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Nombre del archivo seleccionado: </th>
+                        </tr>
+                    </thead>
+                    <tbody class="upload-name-style" *ngIf="verDatos == 0">
+                        <tr *ngFor="let item of files; let i=index">
+                            <td><strong>{{ item.relativePath }}</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+        <button style="background-color: #e85327; border-color:  #e85327; font-size: 18px;" *ngIf="verDatos == 0"
+            type="button" class="btn btn-primary" (click)="crearProceso()">Realizar proceso</button>
+    </div>
+    <!-- Pie de página -->
+    <div class="footer" style="text-align: center;">
+        <div>
+            Serbaco &copy; 2020
+        </div>
+    </div>
+</body>
